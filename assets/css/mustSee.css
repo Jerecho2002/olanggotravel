@@ -1,0 +1,131 @@
+/*must see*/
+        .container-must-see {
+            display: flex;
+            justify-content: center;
+            padding: 3rem 0;
+            background-color: #ffffff;
+        }
+
+        .must-see {
+            width: 90vw;
+        }
+
+        .must-see p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--color-grey);
+            margin-bottom: 1.5rem;
+            font-family: "Lato", serif;
+            letter-spacing: 0.5px;
+        }
+
+        .must-see h1 {
+            font-size: 2.5rem;
+            color: var(--color-grey);
+            font-family: "Playfair Display", serif;
+            margin-bottom: 1rem;
+        }
+
+        .must-see-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 220px 220px 220px;
+            gap: 5px;
+            max-height: 500px;
+        }
+
+        .must-see-info {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .text-content {
+            position: absolute;
+            z-index: 1;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: all 0.3s ease;
+        }
+
+        .must-see-info h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: "Poppins", serif;
+        }
+
+        .text-content p,
+        .text-content a {
+            opacity: 0;
+            max-height: 0;
+            transition: all 1s ease;
+        }
+
+        .must-see-info:hover .text-content {
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .must-see-info:hover .text-content p,
+        .must-see-info:hover .text-content a {
+            opacity: 1;
+            max-height: 100px;
+        }
+
+        .must-see-info p {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+            font-size: 0.9rem;
+            margin: 0 auto;
+            color: var(--color-main);
+        }
+
+        .must-see-info a {
+            text-decoration: none;
+            color: var(--color-main);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .must-see-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .must-see-images .must-see-info:nth-child(1) {
+            grid-area: 1/1/2/2;
+        }
+
+        .must-see-images .must-see-info:nth-child(2) {
+            grid-area: 1/2/2/3;
+        }
+
+        .must-see-images .must-see-info:nth-child(3) {
+            grid-area: 1/3/2/4;
+        }
+
+        .must-see-images .must-see-info:nth-child(4) {
+            grid-area: 2/1/3/2;
+        }
+
+        .must-see-images .must-see-info:nth-child(5) {
+            grid-area: 3/1/4/2;
+        }
+
+        .must-see-images .must-see-info:nth-child(6) {
+            grid-area: 2/2/4/4;
+        }
