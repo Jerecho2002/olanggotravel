@@ -105,6 +105,10 @@
     .see-more-btn:hover {
         background-color: hsl(174, 100%, 43%);
     }
+
+    .activities .place-choices .card a{
+        text-decoration: none;
+    }
     
     @media (max-width: 1024px) {
         .activities .place-choices {
