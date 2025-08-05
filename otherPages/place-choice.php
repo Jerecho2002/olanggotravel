@@ -2,6 +2,9 @@
 include("../database/database.php");
 $places = $data->get_places();
 $place_categories = $data->get_place_categories();
+$data->add_itinerary();
+$data->remove_itinerary();
+$itineraries = $data->get_itineraries();
 // Get current place details
 $current_place = null;
 foreach ($places as $place) {
@@ -28,6 +31,7 @@ $related_places = array_slice($related_places, 0, 3);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($current_place['place_name']); ?> | Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Reset and base styling */
         * {
@@ -311,6 +315,27 @@ $related_places = array_slice($related_places, 0, 3);
                 gap: 5px;
             }
         }
+
+        .itinerary-btn button{
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            background-color: rgba(250, 183, 0, 1);
+            border-radius: 10px;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.5s ease;
+        }
+        .itinerary-btn button:hover{
+            background-color: rgba(255, 194, 25, 1);
+            color: rgba(49, 49, 49, 1);
+        }
+        .itinerary-btn button i{
+            transition: transform 0.5s ease;
+        }
+        .itinerary-btn button:hover i{
+            transform: rotate(360deg);
+        }
     </style>
 </head>
 
@@ -325,7 +350,7 @@ $related_places = array_slice($related_places, 0, 3);
             </nav>
         </header>
 
-        <a href="../index.php" class="back-link">
+        <a href="../index.php#activities" class="back-link">
             <i class="fas fa-arrow-left"></i> Back to all places
         </a>
 
@@ -401,6 +426,42 @@ $related_places = array_slice($related_places, 0, 3);
                         <p>Bring water and sunscreen in summer</p>
                         <p>Check weather conditions before visiting</p>
                     </div>
+
+                                <div class="itinerary-btn">
+                    <form action="" method="POST">
+                        <?php 
+                        $place_has_itinerary = false;
+        
+                            // Check if user is logged in before checking itineraries
+                            if(isset($_SESSION['user_id'])) {
+                                foreach($itineraries as $itinerary) {
+                                    if($itinerary['place_id'] == $_GET['place_id'] && $itinerary['user_id'] == $_SESSION['user_id']) {
+                                        $place_has_itinerary = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            
+                            <?php if(isset($_SESSION['user_id'])): ?>
+                                <?php if($place_has_itinerary): ?>
+                                    <button type="submit" class="btn-remove" name="remove_itinerary">
+                                        <i class="fas fa-minus-circle"></i> Remove Itinerary
+                                    </button>
+                                <?php else: ?>
+                                    <button type="submit" name="add_itinerary" class="btn-add">
+                                        <i class="fas fa-plus-circle"></i> Add Itinerary
+                                    </button>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <a href="login.php" class="btn-login">
+                                    <button type="button">
+                                    <i class="fas fa-sign-in-alt"></i> Login to Add to Itinerary
+                                    </button>
+                                </a>
+                            <?php endif; ?>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -449,26 +510,48 @@ $related_places = array_slice($related_places, 0, 3);
             ?>
 
             <div class="gallery-section">
-                <h2>You may also like</h2>
+                <?php 
+                $show_heading = false;
+                
+                // First pass to determine if we should show the heading
+                foreach ($places as $place) {
+                    if ($place['place_id'] == $_GET['place_id']) continue;
+                    
+                    $other_place_categories = [];
+                    foreach ($place_categories as $pc) {
+                        if ($pc['place_id'] == $place['place_id']) {
+                            $other_place_categories[] = $pc['category_id'];
+                        }
+                    }
+                    
+                    $shared_categories = array_intersect($place_categories_matched, $other_place_categories);
+                    if (!empty($shared_categories)) {
+                        $show_heading = true;
+                        break; // We only need one match to show the heading
+                    }
+                }
+                
+                // Now display the heading if needed
+                if ($show_heading) {
+                    echo '<h2>You may also like</h2>';
+                }
+                ?>
+                
                 <div class="gallery-grid">
                     <?php foreach ($places as $place): ?>
                         <?php
-                        // Skip the current place
-                        if ($place['place_id'] == $_GET['place_id'])
-                            continue;
-
-                        // Get category_ids for this place
+                        if ($place['place_id'] == $_GET['place_id']) continue;
+                        
                         $other_place_categories = [];
                         foreach ($place_categories as $pc) {
                             if ($pc['place_id'] == $place['place_id']) {
                                 $other_place_categories[] = $pc['category_id'];
                             }
                         }
-
-                        // Check for common categories
+                        
                         $shared_categories = array_intersect($place_categories_matched, $other_place_categories);
                         ?>
-
+                        
                         <?php if (!empty($shared_categories)): ?>
                             <div class="gallery-item">
                                 <img src="../assets/images/<?php echo $place['place_img']; ?>"
