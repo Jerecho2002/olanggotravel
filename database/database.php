@@ -18,15 +18,12 @@ class Database
         }
     }
 
-<<<<<<< HEAD
-=======
     public function session_user($location){
         if(!$_SESSION['user_id']){
             header("Location: $location");
         }
     }
 
->>>>>>> 90a2690 (updates)
     public function register()
     {
         if (isset($_POST['register'])) {
@@ -193,8 +190,6 @@ class Database
             $query->execute([$place_id, $user_id]);
         }
     }
-<<<<<<< HEAD
-=======
 
     public function joining(){
         $query = "SELECT p.*, i.* 
@@ -205,6 +200,5 @@ class Database
             $stmt->execute([$_SESSION['user_id']]);
         return $stmt->fetchAll();
     }
->>>>>>> 90a2690 (updates)
 }
 $data = new Database();

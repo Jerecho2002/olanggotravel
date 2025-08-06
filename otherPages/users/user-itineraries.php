@@ -1,8 +1,6 @@
 <?php
     include("../../database/database.php");
-<<<<<<< HEAD
     $itineraries = $data->get_itineraries();
-=======
     $data->session_user("../../index.php");
     $results = $data->joining();
     
@@ -11,7 +9,6 @@
     });
     // Group places into days (3 places per day)
     $days = array_chunk($results, 3);
->>>>>>> 90a2690 (updates)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -178,6 +175,5 @@
         <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
->>>>>>> 90a2690 (updates)
 </body>
 </html>
