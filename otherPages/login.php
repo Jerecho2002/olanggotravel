@@ -1,3 +1,7 @@
+<?php
+    include("../database/database.php");
+    $data->login();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -278,46 +282,3 @@
 </body>
 
 </html>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Login form submission
-            $('#login-form').on('submit', function(e) {
-                e.preventDefault();
-                const submitBtn = $('#login-btn');
-                const btnText = $('#login-btn-text');
-                const loader = $('#login-loader');
-                
-                // Show loading state
-                btnText.hide();
-                loader.show();
-                submitBtn.prop('disabled', true);
-                
-                // AJAX request
-                $.ajax({
-                    url: '/api/login', // Your endpoint
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        window.location.href = '/dashboard'; // Redirect on success
-                    },
-                    error: function() {
-                        // Reset button state
-                        loader.hide();
-                        btnText.show();
-                        submitBtn.prop('disabled', false);
-                    }
-                });
-            });
-            
-            // Smooth transition to register
-            $('#show-register').on('click', function(e) {
-                e.preventDefault();
-                $('.form-container').animate({
-                    opacity: 0
-                }, 300, function() {
-                    window.location.href = $(e.target).attr('href');
-                });
-            });
-        });
-    </script>

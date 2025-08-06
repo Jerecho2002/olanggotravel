@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2025 at 09:32 AM
+-- Generation Time: Aug 05, 2025 at 08:40 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `activities` (
   `activitiy_id` int(11) NOT NULL,
   `place_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `activity_name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -62,13 +62,43 @@ INSERT INTO `categories` (`category_id`, `priority_id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `itineraries`
+--
+
+CREATE TABLE `itineraries` (
+  `itinerary_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `place_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `itineraries`
+--
+
+INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) VALUES
+(1, 3, 9, '2025-08-05 17:04:04'),
+(3, 3, 13, '2025-08-05 17:11:57'),
+(4, 3, 8, '2025-08-05 17:16:02'),
+(5, 3, 11, '2025-08-05 17:22:08'),
+(8, 3, 12, '2025-08-05 18:30:57'),
+(9, 3, 10, '2025-08-05 18:31:02'),
+(10, 2, 12, '2025-08-05 18:35:13'),
+(11, 2, 8, '2025-08-05 18:35:19'),
+(12, 2, 10, '2025-08-05 18:35:29'),
+(13, 2, 9, '2025-08-05 18:35:38'),
+(14, 2, 11, '2025-08-05 18:35:43');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `places`
 --
 
 CREATE TABLE `places` (
   `place_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `place_name` varchar(255) NOT NULL,
   `nearest_index` int(11) NOT NULL,
   `description` text NOT NULL,
   `duration` varchar(50) NOT NULL,
@@ -81,7 +111,7 @@ CREATE TABLE `places` (
 -- Dumping data for table `places`
 --
 
-INSERT INTO `places` (`place_id`, `user_id`, `name`, `nearest_index`, `description`, `duration`, `location`, `place_img`, `created_at`) VALUES
+INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `description`, `duration`, `location`, `place_img`, `created_at`) VALUES
 (8, 1, 'White Sand Beach', 1, 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 'Wildlife Sancuary', '1_upscaled.jpg', '2025-08-01 16:57:01'),
 (9, 1, 'Coral Reef Adventure', 1, 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 'Wildlife Sanctuary', '2_upscaled.jpg', '2025-08-01 16:57:01'),
 (10, 2, 'Sunset Cruise', 2, 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 'Shalala Beach', '3_upscaled.jpg', '2025-08-01 17:02:49'),
@@ -111,7 +141,8 @@ INSERT INTO `place_categories` (`place_categories_id`, `place_id`, `category_id`
 (3, 9, 2),
 (4, 9, 1),
 (5, 10, 2),
-(6, 10, 1);
+(6, 10, 1),
+(7, 8, 3);
 
 -- --------------------------------------------------------
 
@@ -133,10 +164,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `roles`, `created_at`) VALUES
-(1, '', 'echolatosa@gmail.com', '$2y$10$O5j8hGTruhndkuICgW3I1./fuUOajxOJuPEIz7T40t/mGVvlFD3KO', 'user', '2025-07-27 03:45:06'),
-(2, '', 'echolatosa@gmail.com', '$2y$10$iHL4cPgWvDXj09MUYXMdGuEZWGA2I4xarqGFU7eLJSxiJkQGUPMgq', 'user', '2025-07-27 03:46:33'),
-(3, '', 'sample@gmail.com', '$2y$10$whHwHabh.saGV6mOkSfyoOM4Byh9FNgnGrPb5UGSMJ04XsixTJKgC', 'user', '2025-07-28 05:56:29'),
-(4, '', 'staff@gmail.com', '$2y$10$bOwVUIbaqeRBgPfv9J79NOkE0Mqa88QsYvQ0L9pVf2QcMLbpOd5wG', 'staff', '2025-08-02 07:15:34'),
+(1, 'echo', 'echolatosa@gmail.com', '$2y$10$O5j8hGTruhndkuICgW3I1./fuUOajxOJuPEIz7T40t/mGVvlFD3KO', 'user', '2025-08-05 16:44:26'),
+(2, 'echo1', 'echolatosa1@gmail.com', '$2y$10$iHL4cPgWvDXj09MUYXMdGuEZWGA2I4xarqGFU7eLJSxiJkQGUPMgq', 'user', '2025-08-05 16:44:28'),
+(3, 'sample', 'sample@gmail.com', '$2y$10$whHwHabh.saGV6mOkSfyoOM4Byh9FNgnGrPb5UGSMJ04XsixTJKgC', 'user', '2025-08-05 16:44:31'),
+(4, 'staff', 'staff@gmail.com', '$2y$10$bOwVUIbaqeRBgPfv9J79NOkE0Mqa88QsYvQ0L9pVf2QcMLbpOd5wG', 'staff', '2025-08-05 16:44:33'),
 (5, 'echo', 'echo@gmail.com', '$2y$10$H7OWAaqSQIUkw9wvUUj89uViY7ePYcfa7d5Mfil1dyr9dAv.NBNx2', 'admin', '2025-07-29 17:05:38');
 
 --
@@ -156,6 +187,14 @@ ALTER TABLE `activities`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `itineraries`
+--
+ALTER TABLE `itineraries`
+  ADD PRIMARY KEY (`itinerary_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `place_id` (`place_id`);
 
 --
 -- Indexes for table `places`
@@ -195,22 +234,28 @@ ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `itineraries`
+--
+ALTER TABLE `itineraries`
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `places`
 --
 ALTER TABLE `places`
-  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `place_categories`
 --
 ALTER TABLE `place_categories`
-  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -222,6 +267,13 @@ ALTER TABLE `users`
 ALTER TABLE `activities`
   ADD CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `itineraries`
+--
+ALTER TABLE `itineraries`
+  ADD CONSTRAINT `itineraries_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `itineraries_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `places`

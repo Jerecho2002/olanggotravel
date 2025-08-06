@@ -265,7 +265,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <h2>TravelEase</h2>
+                <h2>OlanggoTravels</h2>
                 <p>Staff Dashboard</p>
             </div>
             <div class="nav-menu">
@@ -281,10 +281,12 @@
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Activity</span>
                 </div>
+                <a href="add-place-category.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Add Category</span>
+                    <i class="fas fa-tags"></i>
+                    <span>Add Place Category</span>
                 </div>
+                </a>
                 <div class="nav-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Locations</span>
@@ -301,14 +303,6 @@
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                 </div>
-                <div class="nav-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Categories</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </div>
             </div>
         </div>
         
@@ -317,8 +311,8 @@
             <div class="header">
                 <h1>Dashboard Overview</h1>
                 <div class="user-info">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
-                    <span>Sarah Johnson</span>
+                    <img src="../assets/images/1_upscaled.jpg" alt="User">
+                    <span>Staff</span>
                 </div>
             </div>
             

@@ -3,6 +3,7 @@
     $data->register();
     $data->login();
     $places = $data->get_places();
+    
     shuffle($places);
 ?>
 <!DOCTYPE html>
@@ -11,8 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/loading.css">
@@ -46,18 +46,65 @@
         }
         
         
+        /* Gear Dropdown Styles */
+.gear-dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.gear-icon {
+    font-size: 1.2rem;
+    color: #333;
+    transition: all 0.3s ease;
+    padding: 5px;
+}
+
+.gear-icon:hover {
+    color: #0066cc;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f5f5f5;
+    color: #0066cc;
+}
+
+.gear-dropdown:hover .dropdown-content {
+    display: block;
+}
     </style>
 </head>
 
 <body>
-    <div id="loading-overlay">
+    <!-- <div id="loading-overlay">
         <div class="loader-content">
             <img src="assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
             <div class="dot-loader">
                 <span></span><span></span><span></span><span></span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="home-container">
         <div class="header" id="header">
@@ -74,7 +121,7 @@
         </div>
 
         <div class="container-navbar">
-            <nav>
+           <nav>
                 <div class="logo">
                     <img src="assets/images/logo2-removebg-preview.png" alt="">
                     <a href="#header">OlanggoTravels</a>
@@ -86,15 +133,22 @@
                     <li><a href="otherPages/faq.html">FAQ</a></li>
                 </ul>
                 <ul class="auth-links">
-                    <?php if(isset($_SESSION['user_id'])){
-                    echo "<li><a href='otherPages/logout.php'>Logout</a></li>";
-                    }else{
-                    echo "<li><a href='otherPages/login.php'>Log in</a></li>
-                          <li><a href='otherPages/signup.php' class='sign-up'>Sign up</a></li>";
-                    }; ?>
-                    
+                    <?php if(isset($_SESSION['user_id'])) : ?>
+                        <div class="gear-dropdown">
+                            <i class="fa-solid fa-gear gear-icon"></i>
+                            <div class="dropdown-content">
+                                <a href="">Profile settings</a>
+                                <a href="otherPages/users/user-itineraries.php">My itineraries</a>
+                                <a href="otherPages/logout.php">Logout</a>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <li><a href='otherPages/login.php'>Log in</a></li>
+                        <li><a href='otherPages/signup.php' class='sign-up'>Sign up</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
+
 
             <div class="activities-dropdown">
                 <ul>
