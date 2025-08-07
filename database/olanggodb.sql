@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2025 at 07:28 AM
+-- Generation Time: Aug 07, 2025 at 02:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -20,21 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `olanggodb`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `activities`
---
-
-CREATE TABLE `activities` (
-  `activitiy_id` int(11) NOT NULL,
-  `place_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `activity_name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -79,7 +64,6 @@ CREATE TABLE `itineraries` (
 INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) VALUES
 (1, 3, 9, '2025-08-05 17:04:04'),
 (4, 3, 8, '2025-08-05 17:16:02'),
-(5, 3, 11, '2025-08-05 17:22:08'),
 (8, 3, 12, '2025-08-05 18:30:57'),
 (9, 3, 10, '2025-08-05 18:31:02'),
 (11, 2, 8, '2025-08-05 18:35:19'),
@@ -91,7 +75,8 @@ INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) 
 (23, 7, 13, '2025-08-07 05:26:07'),
 (24, 7, 12, '2025-08-07 05:26:13'),
 (25, 7, 11, '2025-08-07 05:26:17'),
-(26, 7, 8, '2025-08-07 05:26:21');
+(26, 7, 8, '2025-08-07 05:26:21'),
+(27, 3, 11, '2025-08-07 06:49:56');
 
 -- --------------------------------------------------------
 
@@ -104,6 +89,8 @@ CREATE TABLE `places` (
   `user_id` int(11) NOT NULL,
   `place_name` varchar(255) NOT NULL,
   `nearest_index` int(11) NOT NULL,
+  `price_label` varchar(50) NOT NULL,
+  `price` varchar(100) NOT NULL,
   `description` text NOT NULL,
   `duration` varchar(50) NOT NULL,
   `location` varchar(255) NOT NULL,
@@ -115,13 +102,39 @@ CREATE TABLE `places` (
 -- Dumping data for table `places`
 --
 
-INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `description`, `duration`, `location`, `place_img`, `created_at`) VALUES
-(8, 1, 'White Sand Beach', 1, 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 'Wildlife Sancuary', '1_upscaled.jpg', '2025-08-01 16:57:01'),
-(9, 1, 'Coral Reef Adventure', 1, 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 'Wildlife Sanctuary', '2_upscaled.jpg', '2025-08-01 16:57:01'),
-(10, 2, 'Sunset Cruise', 2, 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 'Shalala Beach', '3_upscaled.jpg', '2025-08-01 17:02:49'),
-(11, 2, 'Kayaking Expedition', 2, 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 'Shalala beach', '4_upscaled.jpg', '2025-08-01 17:02:49'),
-(12, 3, 'Island Hopping', 3, 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 'Kabatoy', 'upscalemedia-transformed(5).jpeg', '2025-08-01 17:04:42'),
-(13, 3, 'Beach Camping', 3, 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 'Kabatoy', 'upscalemedia-transformed (6).jpeg', '2025-08-01 17:04:42');
+INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `price_label`, `price`, `description`, `duration`, `location`, `place_img`, `created_at`) VALUES
+(8, 1, 'White Sand Beach', 1, '', '', 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 'Wildlife Sancuary', '1_upscaled.jpg', '2025-08-01 16:57:01'),
+(9, 1, 'Coral Reef Adventure', 1, '', '', 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 'Wildlife Sanctuary', '2_upscaled.jpg', '2025-08-01 16:57:01'),
+(10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 'Shalala Beach', '3_upscaled.jpg', '2025-08-01 17:02:49'),
+(11, 2, 'Kayaking Expedition', 2, '', '', 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 'Shalala beach', '4_upscaled.jpg', '2025-08-01 17:02:49'),
+(12, 3, 'Island Hopping', 3, '', '', 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 'Kabatoy', 'upscalemedia-transformed(5).jpeg', '2025-08-01 17:04:42'),
+(13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 'Kabatoy', 'upscalemedia-transformed (6).jpeg', '2025-08-01 17:04:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `place_activities`
+--
+
+CREATE TABLE `place_activities` (
+  `activitiy_id` int(11) NOT NULL,
+  `place_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `activity_name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `place_activities`
+--
+
+INSERT INTO `place_activities` (`activitiy_id`, `place_id`, `user_id`, `activity_name`, `created_at`) VALUES
+(1, 8, 4, 'Water Activities', '2025-08-07 05:56:50'),
+(2, 8, 4, 'Nature & Wildlife', '2025-08-07 05:56:50'),
+(3, 9, 4, 'Adventure & Sports', '2025-08-07 05:57:32'),
+(4, 9, 4, 'Relaxation', '2025-08-07 05:57:32'),
+(5, 10, 4, 'Culturual & History', '2025-08-07 05:58:15'),
+(6, 10, 4, 'Scenic View', '2025-08-07 05:58:15');
 
 -- --------------------------------------------------------
 
@@ -155,7 +168,9 @@ INSERT INTO `place_categories` (`place_categories_id`, `user_id`, `place_id`, `c
 (24, 4, 13, 1),
 (25, 4, 13, 5),
 (26, 4, 12, 1),
-(27, 4, 12, 3);
+(27, 4, 12, 3),
+(28, 4, 9, 4),
+(30, 4, 12, 4);
 
 -- --------------------------------------------------------
 
@@ -190,14 +205,6 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `roles`, `creat
 --
 
 --
--- Indexes for table `activities`
---
-ALTER TABLE `activities`
-  ADD PRIMARY KEY (`activitiy_id`),
-  ADD KEY `activities_ibfk_1` (`place_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
@@ -216,6 +223,14 @@ ALTER TABLE `itineraries`
 --
 ALTER TABLE `places`
   ADD PRIMARY KEY (`place_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `place_activities`
+--
+ALTER TABLE `place_activities`
+  ADD PRIMARY KEY (`activitiy_id`),
+  ADD KEY `activities_ibfk_1` (`place_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -238,12 +253,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `activities`
---
-ALTER TABLE `activities`
-  MODIFY `activitiy_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -253,7 +262,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `places`
@@ -262,10 +271,16 @@ ALTER TABLE `places`
   MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `place_activities`
+--
+ALTER TABLE `place_activities`
+  MODIFY `activitiy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `place_categories`
 --
 ALTER TABLE `place_categories`
-  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -276,13 +291,6 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `activities`
---
-ALTER TABLE `activities`
-  ADD CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `itineraries`
@@ -296,6 +304,13 @@ ALTER TABLE `itineraries`
 --
 ALTER TABLE `places`
   ADD CONSTRAINT `places_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `place_activities`
+--
+ALTER TABLE `place_activities`
+  ADD CONSTRAINT `place_activities_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `place_activities_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `place_categories`

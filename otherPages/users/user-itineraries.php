@@ -183,9 +183,11 @@
                 <h3><?= htmlspecialchars($place['place_name']) ?></h3>
                 <p>📍 <?= htmlspecialchars($place['location']) ?></p>
                 <p>⏱️ <?= htmlspecialchars($place['duration']) ?></p>
+                <p><?= htmlspecialchars($place['description']) ?></p>
                 
                 <?php if (!empty($categories)): ?>
                 <div class="categories">
+                    <p>Services: </p>
                     <?php foreach ($categories as $category): ?>
                         <span class="category-tag"><?= htmlspecialchars($category['category_name']) ?></span>
                     <?php endforeach; ?>

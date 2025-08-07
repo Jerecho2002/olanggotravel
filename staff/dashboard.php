@@ -327,7 +327,7 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <h3>Total Activities</h3>
+                    <h3>Activities Created</h3>
                     <div class="value" id="total-activities"><?php echo count($activities); ?></div>
                     <div class="trend up">
                         <i class="fas fa-arrow-up"></i>

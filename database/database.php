@@ -85,7 +85,7 @@ class Database
 
     public function get_activities()
     {
-        $query = $this->conn()->prepare("SELECT * FROM activities");
+        $query = $this->conn()->prepare("SELECT * FROM place_activities");
         $query->execute();
         $activities = $query->fetchAll();
         return $activities;
@@ -212,6 +212,29 @@ class Database
           $stmt = $this->conn()->prepare($query);
           $stmt->execute([$itinerary_id]);
           return $stmt->fetchAll();
+    }
+
+    // public function activity_names_itineraries($itinerary_id){
+    //     $query = "SELECT c.category_name
+    //       FROM itineraries i
+    //       JOIN place_categories pc ON i.place_id = pc.place_id
+    //       JOIN categories c ON pc.category_id = c.category_id
+    //       WHERE i.itinerary_id = ?";
+
+    //       $stmt = $this->conn()->prepare($query);
+    //       $stmt->execute([$itinerary_id]);
+    //       return $stmt->fetchAll();
+    // }
+
+    public function get_activity_names(){
+        if(isset($_GET['place_id'])){
+            $place_id = $_GET['place_id'];
+
+            $query = $this->conn()->prepare("SELECT activity_name FROM place_activities WHERE place_id = ?");
+            $query->execute([$place_id]);
+            $activity_names = $query->fetchAll();
+            return $activity_names;
+        }
     }
 }
 $data = new Database();
