@@ -202,6 +202,15 @@ class Database
         return $stmt->fetchAll();
     }
 
+    public function get_place_activities($place_id) {
+    $query = "SELECT pa.activity_name 
+              FROM place_activities pa
+              WHERE pa.place_id = ?";
+    $stmt = $this->conn()->prepare($query);
+    $stmt->execute([$place_id]);
+    return $stmt->fetchAll();
+}
+
     public function category_names($itinerary_id){
         $query = "SELECT c.category_name
           FROM itineraries i
@@ -213,18 +222,6 @@ class Database
           $stmt->execute([$itinerary_id]);
           return $stmt->fetchAll();
     }
-
-    // public function activity_names_itineraries($itinerary_id){
-    //     $query = "SELECT c.category_name
-    //       FROM itineraries i
-    //       JOIN place_categories pc ON i.place_id = pc.place_id
-    //       JOIN categories c ON pc.category_id = c.category_id
-    //       WHERE i.itinerary_id = ?";
-
-    //       $stmt = $this->conn()->prepare($query);
-    //       $stmt->execute([$itinerary_id]);
-    //       return $stmt->fetchAll();
-    // }
 
     public function get_activity_names(){
         if(isset($_GET['place_id'])){
