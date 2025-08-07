@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2025 at 02:12 PM
+-- Generation Time: Aug 07, 2025 at 06:55 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,25 +24,51 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `activities`
+--
+
+CREATE TABLE `activities` (
+  `activity_id` int(11) NOT NULL,
+  `activity_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `activities`
+--
+
+INSERT INTO `activities` (`activity_id`, `activity_name`, `created_at`, `updated_at`) VALUES
+(1, 'Water Activities', '2025-08-07 14:28:46', '2025-08-07 14:28:46'),
+(2, 'Nature & Wildlife', '2025-08-07 14:28:46', '2025-08-07 14:28:46'),
+(3, 'Adventure & Sports', '2025-08-07 14:28:46', '2025-08-07 14:28:46'),
+(4, 'Relaxation', '2025-08-07 14:28:46', '2025-08-07 14:28:46'),
+(5, 'Culturual & History', '2025-08-07 14:28:46', '2025-08-07 14:28:46'),
+(6, 'Scenic View', '2025-08-07 14:28:46', '2025-08-07 14:28:46');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
-  `priority_id` int(11) NOT NULL,
-  `category_name` varchar(100) NOT NULL
+  `category_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `priority_id`, `category_name`) VALUES
-(1, 5, 'Accommodations'),
-(2, 2, 'Food & Beverage'),
-(3, 4, 'Transport Services'),
-(4, 3, 'Activity Providers'),
-(5, 1, 'Essential Services');
+INSERT INTO `categories` (`category_id`, `category_name`, `created_at`, `updated_at`) VALUES
+(1, 'Accommodations', '2025-08-07 14:22:15', '2025-08-07 14:22:15'),
+(2, 'Food & Beverage', '2025-08-07 14:22:15', '2025-08-07 14:22:15'),
+(3, 'Transport Services', '2025-08-07 14:22:15', '2025-08-07 14:22:15'),
+(4, 'Activity Providers', '2025-08-07 14:22:15', '2025-08-07 14:22:15'),
+(5, 'Essential Services', '2025-08-07 14:22:15', '2025-08-07 14:22:15');
 
 -- --------------------------------------------------------
 
@@ -62,7 +88,6 @@ CREATE TABLE `itineraries` (
 --
 
 INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) VALUES
-(1, 3, 9, '2025-08-05 17:04:04'),
 (4, 3, 8, '2025-08-05 17:16:02'),
 (8, 3, 12, '2025-08-05 18:30:57'),
 (9, 3, 10, '2025-08-05 18:31:02'),
@@ -76,7 +101,10 @@ INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) 
 (24, 7, 12, '2025-08-07 05:26:13'),
 (25, 7, 11, '2025-08-07 05:26:17'),
 (26, 7, 8, '2025-08-07 05:26:21'),
-(27, 3, 11, '2025-08-07 06:49:56');
+(27, 3, 11, '2025-08-07 06:49:56'),
+(28, 8, 9, '2025-08-07 13:17:19'),
+(29, 8, 10, '2025-08-07 13:17:28'),
+(30, 3, 9, '2025-08-07 16:48:47');
 
 -- --------------------------------------------------------
 
@@ -117,10 +145,10 @@ INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `pri
 --
 
 CREATE TABLE `place_activities` (
-  `activitiy_id` int(11) NOT NULL,
+  `place_activities_id` int(11) NOT NULL,
   `place_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `activity_name` varchar(255) NOT NULL,
+  `activity_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,13 +156,20 @@ CREATE TABLE `place_activities` (
 -- Dumping data for table `place_activities`
 --
 
-INSERT INTO `place_activities` (`activitiy_id`, `place_id`, `user_id`, `activity_name`, `created_at`) VALUES
-(1, 8, 4, 'Water Activities', '2025-08-07 05:56:50'),
-(2, 8, 4, 'Nature & Wildlife', '2025-08-07 05:56:50'),
-(3, 9, 4, 'Adventure & Sports', '2025-08-07 05:57:32'),
-(4, 9, 4, 'Relaxation', '2025-08-07 05:57:32'),
-(5, 10, 4, 'Culturual & History', '2025-08-07 05:58:15'),
-(6, 10, 4, 'Scenic View', '2025-08-07 05:58:15');
+INSERT INTO `place_activities` (`place_activities_id`, `place_id`, `user_id`, `activity_id`, `created_at`) VALUES
+(7, 8, 4, 1, '2025-08-07 14:35:02'),
+(8, 8, 4, 2, '2025-08-07 14:35:02'),
+(9, 9, 4, 2, '2025-08-07 14:35:02'),
+(10, 9, 4, 4, '2025-08-07 14:35:02'),
+(11, 10, 4, 6, '2025-08-07 14:35:02'),
+(12, 10, 4, 3, '2025-08-07 14:35:02'),
+(13, 11, 4, 2, '2025-08-07 14:35:02'),
+(14, 11, 4, 1, '2025-08-07 14:35:02'),
+(15, 12, 4, 6, '2025-08-07 14:35:02'),
+(16, 12, 4, 2, '2025-08-07 14:35:02'),
+(17, 13, 4, 4, '2025-08-07 14:35:02'),
+(18, 13, 4, 5, '2025-08-07 14:35:02'),
+(19, 8, 4, 3, '2025-08-07 16:34:40');
 
 -- --------------------------------------------------------
 
@@ -170,7 +205,9 @@ INSERT INTO `place_categories` (`place_categories_id`, `user_id`, `place_id`, `c
 (26, 4, 12, 1),
 (27, 4, 12, 3),
 (28, 4, 9, 4),
-(30, 4, 12, 4);
+(30, 4, 12, 4),
+(31, 4, 8, 2),
+(32, 4, 13, 2);
 
 -- --------------------------------------------------------
 
@@ -205,6 +242,12 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `roles`, `creat
 --
 
 --
+-- Indexes for table `activities`
+--
+ALTER TABLE `activities`
+  ADD PRIMARY KEY (`activity_id`);
+
+--
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
@@ -229,9 +272,10 @@ ALTER TABLE `places`
 -- Indexes for table `place_activities`
 --
 ALTER TABLE `place_activities`
-  ADD PRIMARY KEY (`activitiy_id`),
+  ADD PRIMARY KEY (`place_activities_id`),
   ADD KEY `activities_ibfk_1` (`place_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `activity_id` (`activity_id`);
 
 --
 -- Indexes for table `place_categories`
@@ -253,6 +297,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `activities`
+--
+ALTER TABLE `activities`
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -262,7 +312,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `places`
@@ -274,13 +324,13 @@ ALTER TABLE `places`
 -- AUTO_INCREMENT for table `place_activities`
 --
 ALTER TABLE `place_activities`
-  MODIFY `activitiy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `place_activities_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `place_categories`
 --
 ALTER TABLE `place_categories`
-  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -310,7 +360,8 @@ ALTER TABLE `places`
 --
 ALTER TABLE `place_activities`
   ADD CONSTRAINT `place_activities_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `place_activities_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `place_activities_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `place_activities_ibfk_3` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`activity_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `place_categories`
