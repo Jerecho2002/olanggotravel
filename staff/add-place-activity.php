@@ -1,8 +1,8 @@
 <?php
 include("../database/database.php");
 $places = $data->get_places();
-$categories = $data->get_categories();
-$data->add_place_category();
+$activities = $data->get_activities();
+$data->add_place_activity();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -390,15 +390,17 @@ $data->add_place_category();
                     <span>Add Place</span>
                 </div>
                 <a href="add-place-activity.php" style="color: inherit; text-decoration: none;">
-                <div class="nav-item">
+                <div class="nav-item active">
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Place Activity</span>
                 </div>
                 </a>
-                <div class="nav-item active">
+                <a href="add-place-category.php" style="color: inherit; text-decoration: none;">
+                <div class="nav-item">
                     <i class="fas fa-tags"></i>
-                    <span>Add Place Category</a></span>
+                    <span>Add Place Category</span>
                 </div>
+                </a>
                 <div class="nav-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Locations</span>
@@ -421,7 +423,7 @@ $data->add_place_category();
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
-                <h1>Add Place Category</h1>
+                <h1>Add Place Activity</h1>
                 <div class="user-info">
                     <img src="../assets/images/1_upscaled.jpg" alt="User">
                     <span><span><a href="../otherPages/logout.php" style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span></span>
@@ -439,25 +441,25 @@ $data->add_place_category();
                     </div>
 
                     <div class="form-group">
-                        <label for="category_id">Category ID</label>
-                        <input type="number" id="category_id" name="category_id" required
-                            placeholder="Enter category ID (numbers only)" pattern="[0-9]*" inputmode="numeric" min="1" max="<?php echo count($categories); ?>">
+                        <label for="activity_id">Activity ID</label>
+                        <input type="number" id="activity_id" name="activity_id" required
+                            placeholder="Enter activity ID (numbers only)" pattern="[0-9]*" inputmode="numeric" min="1" max="<?php echo count($activities); ?>">
                     </div>
 
-                    <button type="submit" class="submit-btn" name="add_place_category">Add Place Category</button>
+                    <button type="submit" class="submit-btn" name="add_place_activity">Add Place Activity</button>
                 </form>
             </div>
 
             <div class="form-container">
                 <table>
                     <tr>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
+                        <th>Activity ID</th>
+                        <th>Activity Name</th>
                     </tr>
-                    <?php foreach($categories as $category) : ?>
+                    <?php foreach($activities as $activity) : ?>
                         <tr>
-                            <td><?php echo $category['category_id']; ?></td>
-                            <td><?php echo $category['category_name']; ?></td>
+                            <td><?php echo $activity['activity_id']; ?></td>
+                            <td><?php echo $activity['activity_name']; ?></td>
                         </tr>
                     <?php endforeach; ?>
                     <tr>

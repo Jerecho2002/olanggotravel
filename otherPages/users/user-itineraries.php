@@ -2,14 +2,20 @@
 include("../../database/database.php");
 $itineraries = $data->get_itineraries();
 $data->session_user("../../index.php");
-$results = $data->joining();
+$results = $data->itineraries();
 
 usort($results, function ($a, $b) {
-    return $a['nearest_index'] - $b['nearest_index']; // Ascending sort
+    return $a['nearest_index'] - $b['nearest_index'];
 });
 
-// Group places into days (3 places per day)
-$days = array_chunk($results, 3);
+$days = array_chunk($results, 3); // 3 places per day
+
+// Define time slots for each place in a day
+$timeSlots = [
+    ['9:30AM - 12:00PM', 'Morning'],
+    ['1:30PM - 4:30PM', 'Afternoon'],
+    ['6:00PM - 8:00PM', 'Evening']
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,448 +24,229 @@ $days = array_chunk($results, 3);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olanggo Island Itinerary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #1a6b8c;
-            --secondary-color: #2e8b57;
-            --accent-color: #e6d5b8;
-            --light-bg: #f8f9fa;
-            --text-color: #333;
-            --light-text: #6c757d;
-            --border-color: #e0e0e0;
-        }
-
-        /* Base Styles */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: var(--light-bg);
+            color: #333;
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1a6b8c;
         }
 
         h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-weight: 700;
-            font-size: 2.5rem;
+            color: #1a6b8c;
+            margin-bottom: 5px;
         }
 
-        .subtitle {
-            color: var(--light-text);
-            font-size: 1.1rem;
-            margin-top: 0;
-        }
-
-        .itinerary-container {
+        .day-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            margin-bottom: 40px;
-        }
-
-        .day-section {
-            margin-bottom: 40px;
             border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
             overflow: hidden;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .day-header {
-            background: linear-gradient(90deg, var(--primary-color), #2a7b9c);
+            background: #1a6b8c;
             color: white;
-            padding: 15px 25px;
-            margin: 0;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
+            padding: 12px 20px;
+            font-size: 1.2rem;
         }
 
-        .day-header::before {
-            content: "Day";
-            font-weight: 300;
-            margin-right: 10px;
-            opacity: 0.8;
+        .place-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            position: relative;
         }
 
-        .itinerary-items {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        .itinerary-item {
-            padding: 25px;
-            display: flex;
-            gap: 25px;
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .itinerary-item:hover {
-            background-color: #f8fafb;
-        }
-
-        .itinerary-item:last-child {
+        .place-item:last-child {
             border-bottom: none;
         }
 
-        .place-image-container {
-            flex-shrink: 0;
-            width: 250px;
-            height: 180px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .time-slot {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #1a6b8c;
         }
 
-        .place-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .itinerary-item:hover .place-image {
-            transform: scale(1.03);
-        }
-
-        .place-details {
-            flex-grow: 1;
+        .time-period {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 3px;
         }
 
         .place-name {
-            color: var(--primary-color);
-            margin: 0 0 10px 0;
-            font-size: 1.5rem;
-            font-weight: 600;
+            color: #1a6b8c;
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
+            width: 70%;
         }
 
-        .location {
-            color: var(--secondary-color);
-            font-weight: 500;
+        .place-meta {
+            color: #666;
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .place-meta span {
+            margin-right: 15px;
+        }
+
+        .place-desc {
+            margin: 12px 0;
+            color: #444;
+        }
+
+        .tags {
+            margin-top: 15px;
             display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .duration {
-            background: var(--accent-color);
-            color: #5a4a32;
+        .tag {
+            background: #f0f7ff;
+            color: #1a6b8c;
             padding: 5px 12px;
             border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-
-        .description {
-            color: var(--text-color);
-            margin-bottom: 15px;
-            line-height: 1.7;
-        }
-
-        .categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-            align-items: center;
-        }
-
-        .categories-label {
-            font-size: 0.9rem;
-            color: var(--light-text);
-            margin-right: 5px;
-        }
-
-        .category-tag {
-            background: #f0f7ff;
-            color: var(--primary-color);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #d0e3ff;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .category-tag::before {
-            content: "•";
-            color: var(--secondary-color);
-            font-weight: bold;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 30px;
-            gap: 15px;
-        }
-
-        .print-button,
-        .download-button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .print-button:hover,
-        .download-button:hover {
-            background: #145a7a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .print-button svg,
-        .download-button svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
-        /* Activities Section */
-        .activities-section {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .activities-title {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .activities-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .activity-tag {
-            background: #e8f4fc;
-            color: var(--primary-color);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                padding: 0;
-                font-size: 12pt;
-                background: none;
-            }
-
-            .no-print {
-                display: none;
-            }
-
-            .day-section {
-                page-break-after: always;
-                margin-bottom: 20px;
-                box-shadow: none;
-                border-radius: 0;
-            }
-
-            .itinerary-item {
-                border: none;
-                border-bottom: 1px solid #ddd;
-                padding: 15px 0;
-                page-break-inside: avoid;
-            }
-
-            .place-image-container {
-                width: 180px;
-                height: 120px;
-            }
-
-            header {
-                box-shadow: none;
-                border-bottom: 2px solid var(--primary-color);
-                border-radius: 0;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .itinerary-item {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .place-image-container {
-                width: 100%;
-                height: 200px;
-            }
-
-            .action-buttons {
-                justify-content: center;
-            }
+            font-size: 0.85rem;
         }
 
         .activity-tag {
             background: #e8f5e9;
             color: #2e7d32;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #c8e6c9;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-right: 5px;
         }
 
-        .activity-tag::before {
-            content: "⚈";
-            font-size: 0.7rem;
+        .print-btn {
+            background: #1a6b8c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            float: right;
+        }
+
+        .home-link {
+            color: #1a6b8c;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .home-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+
+        header {
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #1a6b8c;
+        }
+
+        @media print {
+            .print-btn {
+                display: none;
+            }
+
+            .home-link {
+                display: none;
+            }
+
+            body {
+                padding: 0;
+                font-size: 12pt;
+            }
+
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Olanggo Island Travel Itinerary</h1>
-        <p class="subtitle">Your personalized adventure plan</p>
+        <div style="position: relative;">
+            <a class="home-link" href="../../index.php"
+                style="position: absolute; left: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                Back to Home
+            </a>
+            <div style="text-align: center;">
+                <h1>Olanggo Island Itinerary</h1>
+            </div>
+        </div>
     </header>
 
-    <div class="action-buttons no-print">
-        <button class="print-button" onclick="window.print()">Print Itinerary</button>
-    </div>
+    <button class="print-btn" onclick="window.print()">Print Itinerary</button>
+    <div style="clear:both"></div>
 
-    <?php foreach ($results as $place): ?>
-    <div class="place-card">
-        <h3><?= htmlspecialchars($place['place_name']) ?></h3>
-        
-        <!-- Categories -->
-        <?php $categories = $data->category_names($place['itinerary_id'] ?? $place['place_id']); ?>
-        <?php if (!empty($categories)): ?>
-            <div class="categories">
-                <span>Services: </span>
-                <?php foreach ($categories as $category): ?>
-                    <span class="category-tag"><?= htmlspecialchars($category['category_name']) ?></span>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <!-- Activities -->
-        <?php $activities = $data->get_place_activities($place['place_id']); ?>
-        <?php if (!empty($activities)): ?>
-            <div class="categories" style="margin-top: 10px;">
-                <span>Activities: </span>
-                <?php foreach ($activities as $activity): ?>
-                    <span class="activity-tag"><?= htmlspecialchars($activity['activity_name']) ?></span>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
-<?php endforeach; ?>
+    <?php foreach ($days as $dayNumber => $dayPlaces): ?>
+        <div class="day-card">
+            <div class="day-header">Day <?= $dayNumber + 1 ?></div>
 
-    <div class="itinerary-container">
-        <?php foreach ($days as $dayNumber => $dayPlaces): ?>
-            <div class="day-section">
-                <h2 class="day-header">Day <?= $dayNumber + 1 ?></h2>
+            <?php foreach ($dayPlaces as $index => $place):
+                $categories = $data->category_names($place['place_id']);
+                $activities = $data->activity_names($place['place_id']);
+                $timeSlot = $timeSlots[$index];
+                ?>
+                <div class="place-item">
+                    <div class="time-slot">
+                        <?= $timeSlot[0] ?>
+                        <div class="time-period"><?= $timeSlot[1] ?></div>
+                    </div>
 
-                <ul class="itinerary-items">
-                    <?php foreach ($dayPlaces as $place):
-                        $categories = $data->category_names($place['itinerary_id'] ?? $place['place_id']);
-                        $activities = $data->get_place_activities($place['place_id']);
-                        ?>
-                        <li class="itinerary-item">
-                            <div class="place-image-container">
-                                <img src="../../assets/images/<?= htmlspecialchars($place['place_img']) ?>"
-                                    alt="<?= htmlspecialchars($place['place_name']) ?>" class="place-image">
-                            </div>
+                    <h3 class="place-name"><?= htmlspecialchars($place['place_name']) ?></h3>
 
-                            <div class="place-details">
-                                <h3 class="place-name"><?= htmlspecialchars($place['place_name']) ?></h3>
+                    <div class="place-meta">
+                        <span>📍 <?= htmlspecialchars($place['location']) ?></span>
+                    </div>
 
-                                <p class="location">
-                                    📍 <?= htmlspecialchars($place['location']) ?>
-                                </p>
+                    <p class="place-desc"><?= htmlspecialchars($place['description']) ?></p>
 
-                                <p class="duration">
-                                    ⏱️ <?= htmlspecialchars($place['duration']) ?>
-                                </p>
+                    <?php if (!empty($categories)): ?>
+                        <div class="tags">
+                            <span style="color:#666;">Services: </span>
+                            <?php foreach ($categories as $category): ?>
+                                <span class="tag"><?= htmlspecialchars($category['category_name']) ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
 
-                                <p class="description"><?= htmlspecialchars($place['description']) ?></p>
-
-                                <?php if (!empty($categories)): ?>
-                                    <div class="categories">
-                                        <span class="categories-label">Services:</span>
-                                        <?php foreach ($categories as $category): ?>
-                                            <span class="category-tag"><?= htmlspecialchars($category['category_name']) ?></span>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if (!empty($activities)): ?>
-                                    <div class="categories" style="margin-top: 10px;">
-                                        <span class="categories-label">Activities:</span>
-                                        <?php foreach ($activities as $activity): ?>
-                                            <span class="activity-tag"><?= htmlspecialchars($activity['activity_name']) ?></span>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endforeach; ?>
-    </div>
+                    <?php if (!empty($activities)): ?>
+                        <div class="tags" style="margin-top:8px;">
+                            <span style="color:#666;">Activities: </span>
+                            <?php foreach ($activities as $activity): ?>
+                                <span class="tag activity-tag"><?= htmlspecialchars($activity['activity_name']) ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
 </body>
 
 </html>

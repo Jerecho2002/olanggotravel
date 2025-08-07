@@ -5,7 +5,6 @@ $data->remove_itinerary();
 $places = $data->get_places();
 
 $place_categories = $data->get_place_categories();
-$activity_names = $data->get_activity_names();
 $itineraries = $data->get_itineraries();
 // Get current place details
 $current_place = null;
@@ -177,11 +176,23 @@ $related_places = array_slice($related_places, 0, 3);
         }
 
         .tag {
-            background: #e1f0fa;
-            color: #3498db;
+            background: #E3F2FD;  /* Very light blue */
+            color: #1976D2;       /* Medium blue */
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.8em;
+            font-weight: 500;
+            border: 1px solid #BBDEFB; /* Light blue border */
+        }
+
+        .tag1 {
+            background: #E8F5E9;  /* Very light green */
+            color: #388E3C;      /* Medium green */
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            border: 1px solid #C8E6C9; /* Light green border */
         }
 
         /* Gallery */
@@ -391,11 +402,19 @@ $related_places = array_slice($related_places, 0, 3);
                         <li>Excellent hiking trails for all skill levels</li>
                         <li>Local cuisine and dining experiences</li>
                     </ul>
-
+                    <?php $activities = $data->activity_names($_GET['place_id']); ?>
+                    <h2 style="margin-top: 1rem;">Activities</h2>
                     <div class="tag-list">
-                        <?php foreach($activity_names as $an) : ?>
-                            <span class="tag"><?php echo $an['activity_name']; ?></span>
-                        <?php endforeach; ?>
+                            <?php foreach($activities as $activity) : ?>
+                            <span class="tag"><?php echo $activity['activity_name']; ?></span>
+                            <?php endforeach; ?>
+                    </div>
+                    <?php $activities = $data->category_names($_GET['place_id']); ?>
+                    <h2 style="margin-top: 1rem;">Services</h2>
+                    <div class="tag-list">
+                            <?php foreach($activities as $activity) : ?>
+                            <span class="tag1"><?php echo $activity['category_name']; ?></span>
+                            <?php endforeach; ?>
                     </div>
                 </div>
 

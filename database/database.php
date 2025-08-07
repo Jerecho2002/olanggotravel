@@ -18,8 +18,9 @@ class Database
         }
     }
 
-    public function session_user($location){
-        if(!$_SESSION['user_id']){
+    public function session_user($location)
+    {
+        if (!$_SESSION['user_id']) {
             header("Location: $location");
         }
     }
@@ -85,7 +86,7 @@ class Database
 
     public function get_activities()
     {
-        $query = $this->conn()->prepare("SELECT * FROM place_activities");
+        $query = $this->conn()->prepare("SELECT * FROM activities");
         $query->execute();
         $activities = $query->fetchAll();
         return $activities;
@@ -161,7 +162,27 @@ class Database
         }
     }
 
-    public function get_itineraries(){
+    public function add_place_activity()
+    {
+        if (isset($_POST["add_place_activity"])) {
+            $place_id = filter_input(INPUT_POST, 'place_id', FILTER_SANITIZE_NUMBER_INT);
+            $activity_id = filter_input(INPUT_POST, 'activity_id', FILTER_SANITIZE_NUMBER_INT);
+            $user_id = $_SESSION['staff_id'];
+
+            $check_query = $this->conn()->prepare("SELECT * FROM place_activities WHERE place_id = ? AND activity_id = ?");
+            $check_query->execute([$place_id, $activity_id]);
+
+            if ($check_query->rowCount() > 0) {
+                header("Location: add-place-activity.php");
+            } else {
+                $query = $this->conn()->prepare("INSERT INTO place_activities(user_id, place_id, activity_id) VALUES(?,?,?)");
+                $query->execute([$user_id, $place_id, $activity_id]);
+            }
+        }
+    }
+
+    public function get_itineraries()
+    {
         $query = $this->conn()->prepare("SELECT * FROM itineraries");
         $query->execute();
         $itineraries = $query->fetchAll();
@@ -173,17 +194,18 @@ class Database
         if (isset($_POST['add_itinerary'])) {
             $user_id = $_SESSION['user_id'];
             $place_id = $_GET['place_id'];
-            if(isset($_SESSION['user_id'])){
-            $query = $this->conn()->prepare('INSERT INTO itineraries(user_id, place_id) VALUES(?,?)');
-            $query->execute([$user_id, $place_id]);
-            }else{
+            if (isset($_SESSION['user_id'])) {
+                $query = $this->conn()->prepare('INSERT INTO itineraries(user_id, place_id) VALUES(?,?)');
+                $query->execute([$user_id, $place_id]);
+            } else {
                 header("Location: login.php");
             }
         }
     }
 
-    public function remove_itinerary(){
-        if(isset($_POST['remove_itinerary'])){
+    public function remove_itinerary()
+    {
+        if (isset($_POST['remove_itinerary'])) {
             $place_id = $_GET['place_id'];
             $user_id = $_SESSION['user_id'];
 
@@ -192,46 +214,37 @@ class Database
         }
     }
 
-    public function joining(){
+    public function itineraries()
+    {
         $query = "SELECT p.*, i.* 
             FROM places p
             JOIN itineraries i ON p.place_id = i.place_id
             WHERE i.user_id = ?";
-            $stmt = $this->conn()->prepare($query);
-            $stmt->execute([$_SESSION['user_id']]);
+        $stmt = $this->conn()->prepare($query);
+        $stmt->execute([$_SESSION['user_id']]);
         return $stmt->fetchAll();
     }
 
-    public function get_place_activities($place_id) {
-    $query = "SELECT pa.activity_name 
-              FROM place_activities pa
-              WHERE pa.place_id = ?";
-    $stmt = $this->conn()->prepare($query);
-    $stmt->execute([$place_id]);
-    return $stmt->fetchAll();
-}
-
-    public function category_names($itinerary_id){
-        $query = "SELECT c.category_name
-          FROM itineraries i
-          JOIN place_categories pc ON i.place_id = pc.place_id
-          JOIN categories c ON pc.category_id = c.category_id
-          WHERE i.itinerary_id = ?";
-
-          $stmt = $this->conn()->prepare($query);
-          $stmt->execute([$itinerary_id]);
-          return $stmt->fetchAll();
+    public function category_names($place_id)
+    {
+        $query = "SELECT pc.place_id, c.category_name
+                  FROM place_categories pc
+                  JOIN categories c ON c.category_id = pc.category_id
+                  WHERE pc.place_id = ?";
+        $stmt = $this->conn()->prepare($query);
+        $stmt->execute([$place_id]);
+        return $stmt->fetchAll();
     }
 
-    public function get_activity_names(){
-        if(isset($_GET['place_id'])){
-            $place_id = $_GET['place_id'];
-
-            $query = $this->conn()->prepare("SELECT activity_name FROM place_activities WHERE place_id = ?");
-            $query->execute([$place_id]);
-            $activity_names = $query->fetchAll();
-            return $activity_names;
-        }
+    public function activity_names($place_id)
+    {
+        $query = "SELECT pa.place_id, a.activity_name
+                  FROM place_activities pa
+                  JOIN activities a ON a.activity_id = pa.activity_id
+                  WHERE pa.place_id = ?";
+        $stmt = $this->conn()->prepare($query);
+        $stmt->execute([$place_id]);
+        return $stmt->fetchAll();
     }
 }
 $data = new Database();

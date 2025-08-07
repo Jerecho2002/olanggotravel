@@ -277,10 +277,12 @@
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Place</span>
                 </div>
+                <a href="add-place-activity.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
                     <i class="fas fa-plus-circle"></i>
-                    <span>Add Activity</span>
+                    <span>Add Place Activity</span>
                 </div>
+                </a>
                 <a href="add-place-category.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
                     <i class="fas fa-tags"></i>
@@ -312,7 +314,7 @@
                 <h1>Dashboard Overview</h1>
                 <div class="user-info">
                     <img src="../assets/images/1_upscaled.jpg" alt="User">
-                    <span>Staff</span>
+                    <span><a href="../otherPages/logout.php" style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span>
                 </div>
             </div>
             
