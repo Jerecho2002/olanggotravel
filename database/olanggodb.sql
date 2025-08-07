@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2025 at 08:40 PM
+-- Generation Time: Aug 07, 2025 at 07:28 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,16 +78,20 @@ CREATE TABLE `itineraries` (
 
 INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) VALUES
 (1, 3, 9, '2025-08-05 17:04:04'),
-(3, 3, 13, '2025-08-05 17:11:57'),
 (4, 3, 8, '2025-08-05 17:16:02'),
 (5, 3, 11, '2025-08-05 17:22:08'),
 (8, 3, 12, '2025-08-05 18:30:57'),
 (9, 3, 10, '2025-08-05 18:31:02'),
-(10, 2, 12, '2025-08-05 18:35:13'),
 (11, 2, 8, '2025-08-05 18:35:19'),
 (12, 2, 10, '2025-08-05 18:35:29'),
 (13, 2, 9, '2025-08-05 18:35:38'),
-(14, 2, 11, '2025-08-05 18:35:43');
+(15, 3, 13, '2025-08-07 02:41:03'),
+(16, 8, 11, '2025-08-07 05:15:04'),
+(17, 8, 8, '2025-08-07 05:15:10'),
+(23, 7, 13, '2025-08-07 05:26:07'),
+(24, 7, 12, '2025-08-07 05:26:13'),
+(25, 7, 11, '2025-08-07 05:26:17'),
+(26, 7, 8, '2025-08-07 05:26:21');
 
 -- --------------------------------------------------------
 
@@ -127,6 +131,7 @@ INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `des
 
 CREATE TABLE `place_categories` (
   `place_categories_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `place_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -135,14 +140,22 @@ CREATE TABLE `place_categories` (
 -- Dumping data for table `place_categories`
 --
 
-INSERT INTO `place_categories` (`place_categories_id`, `place_id`, `category_id`) VALUES
-(1, 8, 1),
-(2, 8, 2),
-(3, 9, 2),
-(4, 9, 1),
-(5, 10, 2),
-(6, 10, 1),
-(7, 8, 3);
+INSERT INTO `place_categories` (`place_categories_id`, `user_id`, `place_id`, `category_id`) VALUES
+(13, 4, 9, 1),
+(14, 4, 9, 2),
+(15, 4, 9, 3),
+(16, 4, 8, 1),
+(17, 4, 8, 3),
+(18, 4, 8, 5),
+(19, 4, 11, 4),
+(20, 4, 11, 5),
+(21, 4, 10, 1),
+(22, 4, 10, 4),
+(23, 4, 10, 5),
+(24, 4, 13, 1),
+(25, 4, 13, 5),
+(26, 4, 12, 1),
+(27, 4, 12, 3);
 
 -- --------------------------------------------------------
 
@@ -168,7 +181,9 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `roles`, `creat
 (2, 'echo1', 'echolatosa1@gmail.com', '$2y$10$iHL4cPgWvDXj09MUYXMdGuEZWGA2I4xarqGFU7eLJSxiJkQGUPMgq', 'user', '2025-08-05 16:44:28'),
 (3, 'sample', 'sample@gmail.com', '$2y$10$whHwHabh.saGV6mOkSfyoOM4Byh9FNgnGrPb5UGSMJ04XsixTJKgC', 'user', '2025-08-05 16:44:31'),
 (4, 'staff', 'staff@gmail.com', '$2y$10$bOwVUIbaqeRBgPfv9J79NOkE0Mqa88QsYvQ0L9pVf2QcMLbpOd5wG', 'staff', '2025-08-05 16:44:33'),
-(5, 'echo', 'echo@gmail.com', '$2y$10$H7OWAaqSQIUkw9wvUUj89uViY7ePYcfa7d5Mfil1dyr9dAv.NBNx2', 'admin', '2025-07-29 17:05:38');
+(5, 'echo', 'echo@gmail.com', '$2y$10$H7OWAaqSQIUkw9wvUUj89uViY7ePYcfa7d5Mfil1dyr9dAv.NBNx2', 'admin', '2025-07-29 17:05:38'),
+(7, 'user', 'user@gmail.com', '$2y$10$WipQmEJeNWxdOvVrO1TRu./SGEBrBcwsa.KcEEUkNUCvaUSRw.A8C', 'user', '2025-08-07 05:13:51'),
+(8, 'dummy', 'dummy@gmail.com', '$2y$10$pbAus2MDidASclgb0B3sYet6rurIKX3Ign6ZppZCli8NKInPMJYry', 'user', '2025-08-07 05:14:09');
 
 --
 -- Indexes for dumped tables
@@ -209,7 +224,8 @@ ALTER TABLE `places`
 ALTER TABLE `place_categories`
   ADD PRIMARY KEY (`place_categories_id`),
   ADD KEY `category_id` (`category_id`),
-  ADD KEY `place_id` (`place_id`);
+  ADD KEY `place_id` (`place_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -237,7 +253,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `places`
@@ -249,13 +265,13 @@ ALTER TABLE `places`
 -- AUTO_INCREMENT for table `place_categories`
 --
 ALTER TABLE `place_categories`
-  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -286,7 +302,8 @@ ALTER TABLE `places`
 --
 ALTER TABLE `place_categories`
   ADD CONSTRAINT `place_categories_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `place_categories_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `place_categories_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `place_categories_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
