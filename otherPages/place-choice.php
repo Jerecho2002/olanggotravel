@@ -1,9 +1,11 @@
 <?php
 include("../database/database.php");
-$places = $data->get_places();
-$place_categories = $data->get_place_categories();
 $data->add_itinerary();
 $data->remove_itinerary();
+$places = $data->get_places();
+
+$place_categories = $data->get_place_categories();
+$activity_names = $data->get_activity_names();
 $itineraries = $data->get_itineraries();
 // Get current place details
 $current_place = null;
@@ -391,9 +393,9 @@ $related_places = array_slice($related_places, 0, 3);
                     </ul>
 
                     <div class="tag-list">
-                        <span class="tag">Family Friendly</span>
-                        <span class="tag">Photography</span>
-                        <span class="tag">Adventure</span>
+                        <?php foreach($activity_names as $an) : ?>
+                            <span class="tag"><?php echo $an['activity_name']; ?></span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 

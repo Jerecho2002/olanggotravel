@@ -1,3 +1,7 @@
+<?php
+    include("../database/database.php");
+    $data->register();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,7 +267,7 @@
                     <input type="password" name="registerPass" placeholder="Password" required>
                 </div>
                 
-                <input type="hidden" name="roles" value="admin">
+                <input type="hidden" name="roles" value="user">
                 
                 <button type="submit" name="register" id="register-btn">
                     <span id="register-btn-text">Sign Up</span>
@@ -281,49 +285,5 @@
             </form>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Registration form submission
-            $('#register-form').on('submit', function(e) {
-                e.preventDefault();
-                const submitBtn = $('#register-btn');
-                const btnText = $('#register-btn-text');
-                const loader = $('#register-loader');
-                
-                // Show loading state
-                btnText.hide();
-                loader.show();
-                submitBtn.prop('disabled', true);
-                
-                // AJAX request
-                $.ajax({
-                    url: '/api/register', // Your endpoint
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        window.location.href = 'login.html'; // Redirect on success
-                    },
-                    error: function() {
-                        // Reset button state
-                        loader.hide();
-                        btnText.show();
-                        submitBtn.prop('disabled', false);
-                    }
-                });
-            });
-            
-            // Smooth transition to login
-            $('#show-login').on('click', function(e) {
-                e.preventDefault();
-                $('.container').animate({
-                    opacity: 0
-                }, 300, function() {
-                    window.location.href = $(e.target).attr('href');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
