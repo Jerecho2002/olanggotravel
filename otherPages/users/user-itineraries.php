@@ -15,14 +15,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <title>Document</title>
 </head>
 <body>
-    <?php foreach($itineraries as $itinerary) : ?>
-        <p>User ID: <?php echo $itinerary['user_id'] ?> Place ID: <?php echo $itinerary['place_id']; ?></p>
-    <?php endforeach; ?>
-=======
     <title>Olanggo Island Itinerary</title>
     <style>
         /* Base Styles */
