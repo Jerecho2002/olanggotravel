@@ -62,7 +62,7 @@ class Database
 
                     } elseif ($user['roles'] == 'staff') {
                         $_SESSION['staff_id'] = $user['user_id'];
-                        header("Location: staff/home.php");
+                        header("Location: ../staff/dashboard.php");
 
                     } else {
                         $_SESSION['user_email'] = $loginEmail;
@@ -147,6 +147,7 @@ class Database
 
             $place_id = filter_input(INPUT_POST, 'place_id', FILTER_SANITIZE_NUMBER_INT);
             $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
+            $user_id = $_SESSION['staff_id'];
 
             $check_query = $this->conn()->prepare("SELECT * FROM place_categories WHERE place_id = ? AND category_id = ?");
             $check_query->execute([$place_id, $category_id]);
@@ -154,8 +155,8 @@ class Database
             if ($check_query->rowCount() > 0) {
                 header("Location: add-place-category.php");
             } else {
-                $query = $this->conn()->prepare("INSERT INTO place_categories(place_id, category_id) VALUES(?,?)");
-                $query->execute([$place_id, $category_id]);
+                $query = $this->conn()->prepare("INSERT INTO place_categories(user_id, place_id, category_id) VALUES(?,?,?)");
+                $query->execute([$user_id, $place_id, $category_id]);
             }
         }
     }
@@ -199,6 +200,18 @@ class Database
             $stmt = $this->conn()->prepare($query);
             $stmt->execute([$_SESSION['user_id']]);
         return $stmt->fetchAll();
+    }
+
+    public function category_names($itinerary_id){
+        $query = "SELECT c.category_name
+          FROM itineraries i
+          JOIN place_categories pc ON i.place_id = pc.place_id
+          JOIN categories c ON pc.category_id = c.category_id
+          WHERE i.itinerary_id = ?";
+
+          $stmt = $this->conn()->prepare($query);
+          $stmt->execute([$itinerary_id]);
+          return $stmt->fetchAll();
     }
 }
 $data = new Database();

@@ -140,6 +140,22 @@
         .day-header { background: #1a6b8c; color: white; padding: 10px; }
         .place-card { display: flex; margin: 10px 0; }
         .place-image { width: 150px; height: 100px; object-fit: cover; }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .category-tag {
+            background: #f0f7ff;
+            color: #1a6b8c;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid #d0e3ff;
+        }
     </style>
 </head>
 <body>
@@ -156,7 +172,10 @@
     <div class="day-section">
         <h2 class="day-header">Day <?= $dayNumber + 1 ?></h2>
         
-        <?php foreach ($dayPlaces as $place): ?>
+        <?php foreach ($dayPlaces as $place): 
+            // Get categories for this specific place
+            $categories = $data->category_names($place['itinerary_id'] ?? $place['place_id']);
+        ?>
         <div class="place-card">
             <img src="../../assets/images/<?= htmlspecialchars($place['place_img']) ?>" 
                  class="place-image">
@@ -164,11 +183,18 @@
                 <h3><?= htmlspecialchars($place['place_name']) ?></h3>
                 <p>📍 <?= htmlspecialchars($place['location']) ?></p>
                 <p>⏱️ <?= htmlspecialchars($place['duration']) ?></p>
-                <!-- nearest_index hidden from user view -->
+                
+                <?php if (!empty($categories)): ?>
+                <div class="categories">
+                    <?php foreach ($categories as $category): ?>
+                        <span class="category-tag"><?= htmlspecialchars($category['category_name']) ?></span>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </body>
 </html>
