@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Explorer | Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/loading.css">
     <style>
         :root {
             --color-main: #FFFFFF;
@@ -235,6 +236,15 @@
 </head>
 
 <body>
+    <div id="loading-overlay">
+        <div class="loader-content">
+            <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
+            <div class="dot-loader">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
 
         <video autoplay muted loop class="video-background">
@@ -282,3 +292,4 @@
 </body>
 
 </html>
+<script src="../assets/js/loading.js"></script>

@@ -97,14 +97,14 @@
 </head>
 
 <body>
-    <!-- <div id="loading-overlay">
+    <div id="loading-overlay">
         <div class="loader-content">
             <img src="assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
             <div class="dot-loader">
                 <span></span><span></span><span></span><span></span>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div class="home-container">
         <div class="header" id="header">

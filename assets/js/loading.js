@@ -6,7 +6,7 @@ let resourcesLoaded = false;
 setTimeout(() => {
     minTimeElapsed = true;
     tryHideLoader(); // Try to hide if resources are already loaded
-}, 1500); // Minimum 1.5 seconds
+}, 800); // Minimum 1.5 seconds
 
 // Track when all resources are loaded
 window.addEventListener('load', () => {

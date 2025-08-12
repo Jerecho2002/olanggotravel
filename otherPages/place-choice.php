@@ -33,6 +33,7 @@ $related_places = array_slice($related_places, 0, 3);
     <title><?php echo htmlspecialchars($current_place['place_name']); ?> | Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/loading.css">
     <style>
         /* Reset and base styling */
         * {
@@ -353,7 +354,14 @@ $related_places = array_slice($related_places, 0, 3);
 </head>
 
 <body>
-
+  <div id="loading-overlay">
+        <div class="loader-content">
+            <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
+            <div class="dot-loader">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <header class="header">
@@ -600,3 +608,4 @@ $related_places = array_slice($related_places, 0, 3);
 </body>
 
 </html>
+<script src="../assets/js/loading.js"></script>

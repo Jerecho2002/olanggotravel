@@ -11,6 +11,7 @@ $data->add_place_activity();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Travel Management Dashboard</title>
     <style>
         :root {
@@ -27,7 +28,7 @@ $data->add_place_activity();
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -196,7 +197,8 @@ $data->add_place_activity();
             color: var(--dark-color);
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -205,7 +207,8 @@ $data->add_place_activity();
             transition: border-color 0.3s;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: var(--primary-color);
             outline: none;
         }
@@ -330,41 +333,74 @@ $data->add_place_activity();
             background-color: #bdc3c7;
             cursor: not-allowed;
         }
+
         .form-layout-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-}
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
 
-.left-forms {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+        .left-forms {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-.right-form {
-    position: sticky;
-    top: 20px;
-}
+        .right-form {
+            position: sticky;
+            top: 20px;
+        }
 
-/* Adjust the form container styles */
-.form-container {
-    max-width: 100%; /* Remove the fixed max-width */
-    width: 100%;
-    margin: 0; /* Remove the auto margin */
-}
+        /* Adjust the form container styles */
+        .form-container {
+            max-width: 100%;
+            /* Remove the fixed max-width */
+            width: 100%;
+            margin: 0;
+            /* Remove the auto margin */
+        }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-    .form-layout-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .right-form {
-        position: static;
-    }
-}
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .form-layout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .right-form {
+                position: static;
+            }
+        }
+
+        .selected-place {
+            background-color: #e6f7ff !important;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .selected-activity {
+            background-color: #e6f7ff !important;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .selected-place-display {
+            padding: 12px 15px;
+            border: none;
+            min-height: 46px;
+            margin-bottom: 20px;
+        }
+        
+        #placesTableBody tr{
+            cursor: pointer;
+        }
+
+        .selected-place-display{
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .selected-place-display strong {
+            color: var(--dark-color);
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -380,26 +416,26 @@ $data->add_place_activity();
             </div>
             <div class="nav-menu">
                 <a href="dashboard.php" style="color: inherit; text-decoration: none;">
-                <div class="nav-item">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </div>
+                    <div class="nav-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
                 </a>
                 <div class="nav-item">
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Place</span>
                 </div>
                 <a href="add-place-activity.php" style="color: inherit; text-decoration: none;">
-                <div class="nav-item active">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Add Place Activity</span>
-                </div>
+                    <div class="nav-item active">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Place Activity</span>
+                    </div>
                 </a>
                 <a href="add-place-category.php" style="color: inherit; text-decoration: none;">
-                <div class="nav-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Add Place Category</span>
-                </div>
+                    <div class="nav-item">
+                        <i class="fas fa-tags"></i>
+                        <span>Add Place Category</span>
+                    </div>
                 </a>
                 <div class="nav-item">
                     <i class="fas fa-map-marker-alt"></i>
@@ -426,80 +462,73 @@ $data->add_place_activity();
                 <h1>Add Place Activity</h1>
                 <div class="user-info">
                     <img src="../assets/images/1_upscaled.jpg" alt="User">
-                    <span><span><a href="../otherPages/logout.php" style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span></span>
+                    <span><span><a href="../otherPages/logout.php"
+                                style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span></span>
                 </div>
             </div>
 
             <div class="form-layout-container">
-                 <div class="left-forms">
-            <div class="form-container">
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                    <div class="form-group">
-                        <label for="place_id">Place ID</label>
-                        <input type="number" id="place_id" name="place_id" required
-                            placeholder="Enter place ID (numbers only)" pattern="[0-9]*" inputmode="numeric">
+                <div class="left-forms">
+                    <div class="form-container">
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                            <div class="form-group">
+                                <label>Selected Place</label>
+                                <div id="selectedPlaceDisplay" class="selected-place-display">
+                                    No place selected yet
+                                </div>
+                                <input type="hidden" id="place_id" name="place_id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="activity_id">Select Activity</label>
+                                <select id="activity_id" name="activity_id" required>
+                                    <option value="">-- Select an Activity --</option>
+                                    <?php foreach ($activities as $activity): ?>
+                                        <option value="<?php echo $activity['activity_id']; ?>">
+                                            <?php echo $activity['activity_name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="submit-btn" name="add_place_activity">Add Place
+                                Activity</button>
+                        </form>
                     </div>
 
-                    <div class="form-group">
-                        <label for="activity_id">Activity ID</label>
-                        <input type="number" id="activity_id" name="activity_id" required
-                            placeholder="Enter activity ID (numbers only)" pattern="[0-9]*" inputmode="numeric" min="1" max="<?php echo count($activities); ?>">
+                </div>
+
+                <div class="right-form form-container">
+                    <h2>Search Places</h2>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search by place name">
                     </div>
-
-                    <button type="submit" class="submit-btn" name="add_place_activity">Add Place Activity</button>
-                </form>
-            </div>
-
-            <div class="form-container">
-                <table>
-                    <tr>
-                        <th>Activity ID</th>
-                        <th>Activity Name</th>
-                    </tr>
-                    <?php foreach($activities as $activity) : ?>
-                        <tr>
-                            <td><?php echo $activity['activity_id']; ?></td>
-                            <td><?php echo $activity['activity_name']; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <tr>
-
-                    </tr>
-                </table>
-            </div>
-            </div>
-
-            <div class="form-container">
-                <h2>Search Place</h2>
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Enter place ID or Name">
+                    <table id="placesTable">
+                        <thead>
+                            <tr>
+                                <th>Picture</th>
+                                <th>Place Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="placesTableBody">
+                            <!-- Results will be loaded here -->
+                        </tbody>
+                    </table>
+                    <div id="noResults" class="no-results" style="display: none;">No places found matching your search.
+                    </div>
+                    <div class="pagination">
+                        <button id="prevBtn" disabled>Previous</button>
+                        <span id="pageInfo">Page 1 of 1</span>
+                        <button id="nextBtn" disabled>Next</button>
+                    </div>
                 </div>
-                <table id="placesTable">
-                    <thead>
-                        <tr>
-                            <th>Picture</th>
-                            <th>Place ID</th>
-                            <th>Place Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="placesTableBody">
-                        <!-- Results will be loaded here -->
-                    </tbody>
-                </table>
-                <div id="noResults" class="no-results" style="display: none;">No places found matching your search.
-                </div>
-                <div class="pagination">
-                    <button id="prevBtn" disabled>Previous</button>
-                    <span id="pageInfo">Page 1 of 1</span>
-                    <button id="nextBtn" disabled>Next</button>
-                </div>
-            </div>
             </div>
 
         </div>
     </div>
 </body>
+
 </html>
 <script>
     window.placesData = <?php echo json_encode($places); ?>;
-</script><script src="js/place-search.js"></script>
+</script>
+<script src="js/place-search.js"></script>

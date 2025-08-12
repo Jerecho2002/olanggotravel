@@ -24,6 +24,7 @@ $timeSlots = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olanggo Island Itinerary</title>
+    <link rel="stylesheet" href="../../assets/css/loading.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -185,6 +186,15 @@ $timeSlots = [
 </head>
 
 <body>
+    <div id="loading-overlay">
+        <div class="loader-content">
+            <img src="../../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
+            <div class="dot-loader">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <header>
         <div style="position: relative;">
             <a class="home-link" href="../../index.php"
@@ -250,3 +260,4 @@ $timeSlots = [
 </body>
 
 </html>
+<script src="../../assets/js/loading.js"></script>
