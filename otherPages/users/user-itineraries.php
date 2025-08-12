@@ -3,6 +3,7 @@ include("../../database/database.php");
 $itineraries = $data->get_itineraries();
 $data->session_user("../../index.php");
 $results = $data->itineraries();
+$locations = $data->get_locations();
 
 usort($results, function ($a, $b) {
     return $a['nearest_index'] - $b['nearest_index'];
@@ -231,7 +232,12 @@ $timeSlots = [
                     <h3 class="place-name"><?= htmlspecialchars($place['place_name']) ?></h3>
 
                     <div class="place-meta">
-                        <span>📍 <?= htmlspecialchars($place['location']) ?></span>
+                        <span>📍  <?php foreach($locations as $location){
+                                if($place['location_id'] == $location['location_id']){
+                                    echo htmlspecialchars($location['location_name']);
+                                }
+                            }
+                            ?></span>
                     </div>
 
                     <p class="place-desc"><?= htmlspecialchars($place['description']) ?></p>

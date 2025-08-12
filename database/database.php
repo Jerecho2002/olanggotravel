@@ -25,6 +25,13 @@ class Database
         }
     }
 
+    public function session_staff($location)
+    {
+        if (!$_SESSION['staff_id']) {
+            header("Location: $location");
+        }
+    }
+
     public function register()
     {
         if (isset($_POST['register'])) {
@@ -44,6 +51,25 @@ class Database
         }
     }
 
+    public function addStaff()
+    {
+        if (isset($_POST['registerStaff'])) {
+            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+            $location_id = filter_input(INPUT_POST, 'location_id', FILTER_SANITIZE_NUMBER_INT);
+            $img = $_FILES['staff_img']['name'];
+            $img_tmp_name = $_FILES['staff_img']['tmp_name'];
+            $img_folder = '../assets/images/' . $img;
+
+            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+
+            $query = $this->conn()->prepare("INSERT INTO staff(username, email, password, location_id, staff_img) VALUES(?,?,?,?,?)");
+            $query->execute([$username, $email, $passwordHash, $location_id, $img]);
+            move_uploaded_file($img_tmp_name, $img_folder);
+        }
+    }
+
     public function login()
     {
         if (isset($_POST['login'])) {
@@ -59,11 +85,7 @@ class Database
                 if (password_verify($loginPass, $user['password'])) {
                     if ($user['roles'] == 'admin') {
                         $_SESSION['admin_id'] = $user['user_id'];
-                        header("Location: admin/admin.php");
-
-                    } elseif ($user['roles'] == 'staff') {
-                        $_SESSION['staff_id'] = $user['user_id'];
-                        header("Location: ../staff/dashboard.php");
+                        header("Location: ../admin/dashboard.php");
 
                     } else {
                         $_SESSION['user_email'] = $loginEmail;
@@ -76,12 +98,44 @@ class Database
         }
     }
 
+    public function loginStaff()
+    {
+        if (isset($_POST['staffLogin'])) {
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+            $query = $this->conn()->prepare("SELECT staff_id, password, location_id FROM staff WHERE email = :email");
+            $query->execute([
+                'email' => $email,
+            ]);
+            $staff = $query->fetch();
+            if ($staff) {
+                if (password_verify($password, $staff['password'])) {
+                        $_SESSION['staff_email'] = $email;
+                        $_SESSION['staff_id'] = $staff['staff_id'];
+                        $_SESSION['location_id'] = $staff['location_id'];
+                        header("Location: dashboard.php");
+                    } else {
+                        header("Location: login.php");
+                    }
+                }
+            }
+
+        }
+
     public function get_places()
     {
         $query = $this->conn()->prepare("SELECT * FROM places");
         $query->execute();
         $places = $query->fetchAll();
         return $places;
+    }
+
+    public function get_locations(){
+        $query = $this->conn()->prepare("SELECT * FROM locations");
+        $query->execute();
+        $locations = $query->fetchAll();
+        return $locations;
     }
 
     public function get_activities()
@@ -194,9 +248,10 @@ class Database
         if (isset($_POST['add_itinerary'])) {
             $user_id = $_SESSION['user_id'];
             $place_id = $_GET['place_id'];
+            $location_id = $_POST['location_id'];
             if (isset($_SESSION['user_id'])) {
-                $query = $this->conn()->prepare('INSERT INTO itineraries(user_id, place_id) VALUES(?,?)');
-                $query->execute([$user_id, $place_id]);
+                $query = $this->conn()->prepare('INSERT INTO itineraries(user_id, place_id, location_id) VALUES(?,?,?)');
+                $query->execute([$user_id, $place_id, $location_id]);
             } else {
                 header("Location: login.php");
             }

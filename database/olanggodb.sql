@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2025 at 06:55 PM
+-- Generation Time: Aug 12, 2025 at 11:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -80,6 +80,7 @@ CREATE TABLE `itineraries` (
   `itinerary_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `place_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -87,24 +88,30 @@ CREATE TABLE `itineraries` (
 -- Dumping data for table `itineraries`
 --
 
-INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `created_at`) VALUES
-(4, 3, 8, '2025-08-05 17:16:02'),
-(8, 3, 12, '2025-08-05 18:30:57'),
-(9, 3, 10, '2025-08-05 18:31:02'),
-(11, 2, 8, '2025-08-05 18:35:19'),
-(12, 2, 10, '2025-08-05 18:35:29'),
-(13, 2, 9, '2025-08-05 18:35:38'),
-(15, 3, 13, '2025-08-07 02:41:03'),
-(16, 8, 11, '2025-08-07 05:15:04'),
-(17, 8, 8, '2025-08-07 05:15:10'),
-(23, 7, 13, '2025-08-07 05:26:07'),
-(24, 7, 12, '2025-08-07 05:26:13'),
-(25, 7, 11, '2025-08-07 05:26:17'),
-(26, 7, 8, '2025-08-07 05:26:21'),
-(27, 3, 11, '2025-08-07 06:49:56'),
-(28, 8, 9, '2025-08-07 13:17:19'),
-(29, 8, 10, '2025-08-07 13:17:28'),
-(30, 3, 9, '2025-08-07 16:48:47');
+INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `location_id`, `created_at`) VALUES
+(36, 3, 10, 2, '2025-08-12 21:12:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `location_id` int(11) NOT NULL,
+  `location_name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`location_id`, `location_name`, `created_at`, `updated_at`) VALUES
+(1, 'Wildlife Sancuary', '2025-08-11 10:56:02', '2025-08-11 10:56:02'),
+(2, 'Shalala Beach', '2025-08-11 10:56:02', '2025-08-11 10:56:02'),
+(3, 'Kabatoy', '2025-08-11 10:56:02', '2025-08-11 10:56:02');
 
 -- --------------------------------------------------------
 
@@ -121,7 +128,7 @@ CREATE TABLE `places` (
   `price` varchar(100) NOT NULL,
   `description` text NOT NULL,
   `duration` varchar(50) NOT NULL,
-  `location` varchar(255) NOT NULL,
+  `location_id` int(11) NOT NULL,
   `place_img` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -130,13 +137,13 @@ CREATE TABLE `places` (
 -- Dumping data for table `places`
 --
 
-INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `price_label`, `price`, `description`, `duration`, `location`, `place_img`, `created_at`) VALUES
-(8, 1, 'White Sand Beach', 1, '', '', 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 'Wildlife Sancuary', '1_upscaled.jpg', '2025-08-01 16:57:01'),
-(9, 1, 'Coral Reef Adventure', 1, '', '', 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 'Wildlife Sanctuary', '2_upscaled.jpg', '2025-08-01 16:57:01'),
-(10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 'Shalala Beach', '3_upscaled.jpg', '2025-08-01 17:02:49'),
-(11, 2, 'Kayaking Expedition', 2, '', '', 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 'Shalala beach', '4_upscaled.jpg', '2025-08-01 17:02:49'),
-(12, 3, 'Island Hopping', 3, '', '', 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 'Kabatoy', 'upscalemedia-transformed(5).jpeg', '2025-08-01 17:04:42'),
-(13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 'Kabatoy', 'upscalemedia-transformed (6).jpeg', '2025-08-01 17:04:42');
+INSERT INTO `places` (`place_id`, `user_id`, `place_name`, `nearest_index`, `price_label`, `price`, `description`, `duration`, `location_id`, `place_img`, `created_at`) VALUES
+(8, 1, 'White Sand Beach', 1, '', '', 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 1, '1_upscaled.jpg', '2025-08-01 23:57:01'),
+(9, 1, 'Coral Reef Adventure', 1, '', '', 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 1, '2_upscaled.jpg', '2025-08-01 23:57:01'),
+(10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 2, '3_upscaled.jpg', '2025-08-02 00:02:49'),
+(11, 2, 'Kayaking Expedition', 2, '', '', 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 2, '4_upscaled.jpg', '2025-08-02 00:02:49'),
+(12, 3, 'Island Hopping', 3, '', '', 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 3, 'upscalemedia-transformed(5).jpeg', '2025-08-02 00:04:42'),
+(13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 3, 'upscalemedia-transformed (6).jpeg', '2025-08-02 00:04:42');
 
 -- --------------------------------------------------------
 
@@ -152,25 +159,6 @@ CREATE TABLE `place_activities` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `place_activities`
---
-
-INSERT INTO `place_activities` (`place_activities_id`, `place_id`, `user_id`, `activity_id`, `created_at`) VALUES
-(7, 8, 4, 1, '2025-08-07 14:35:02'),
-(8, 8, 4, 2, '2025-08-07 14:35:02'),
-(9, 9, 4, 2, '2025-08-07 14:35:02'),
-(10, 9, 4, 4, '2025-08-07 14:35:02'),
-(11, 10, 4, 6, '2025-08-07 14:35:02'),
-(12, 10, 4, 3, '2025-08-07 14:35:02'),
-(13, 11, 4, 2, '2025-08-07 14:35:02'),
-(14, 11, 4, 1, '2025-08-07 14:35:02'),
-(15, 12, 4, 6, '2025-08-07 14:35:02'),
-(16, 12, 4, 2, '2025-08-07 14:35:02'),
-(17, 13, 4, 4, '2025-08-07 14:35:02'),
-(18, 13, 4, 5, '2025-08-07 14:35:02'),
-(19, 8, 4, 3, '2025-08-07 16:34:40');
-
 -- --------------------------------------------------------
 
 --
@@ -184,30 +172,29 @@ CREATE TABLE `place_categories` (
   `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `place_categories`
+-- Table structure for table `staff`
 --
 
-INSERT INTO `place_categories` (`place_categories_id`, `user_id`, `place_id`, `category_id`) VALUES
-(13, 4, 9, 1),
-(14, 4, 9, 2),
-(15, 4, 9, 3),
-(16, 4, 8, 1),
-(17, 4, 8, 3),
-(18, 4, 8, 5),
-(19, 4, 11, 4),
-(20, 4, 11, 5),
-(21, 4, 10, 1),
-(22, 4, 10, 4),
-(23, 4, 10, 5),
-(24, 4, 13, 1),
-(25, 4, 13, 5),
-(26, 4, 12, 1),
-(27, 4, 12, 3),
-(28, 4, 9, 4),
-(30, 4, 12, 4),
-(31, 4, 8, 2),
-(32, 4, 13, 2);
+CREATE TABLE `staff` (
+  `staff_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `staff_img` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`staff_id`, `username`, `email`, `password`, `location_id`, `staff_img`, `created_at`, `updated_at`) VALUES
+(1, 'staff', 'staff@gmail.com', '$2y$10$MGMalRYDB6Qy6WFOsUOIIe5KqRnv8iNi9pdI/.1/lDILE7c4RCzVe', 2, 'istockphoto-1499707292-1024x1024.jpg', '2025-08-11 11:26:11', '2025-08-12 21:16:38');
 
 -- --------------------------------------------------------
 
@@ -220,7 +207,7 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `roles` enum('user','staff','admin','') NOT NULL,
+  `roles` enum('user','admin') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -232,7 +219,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `roles`, `creat
 (1, 'echo', 'echolatosa@gmail.com', '$2y$10$O5j8hGTruhndkuICgW3I1./fuUOajxOJuPEIz7T40t/mGVvlFD3KO', 'user', '2025-08-05 16:44:26'),
 (2, 'echo1', 'echolatosa1@gmail.com', '$2y$10$iHL4cPgWvDXj09MUYXMdGuEZWGA2I4xarqGFU7eLJSxiJkQGUPMgq', 'user', '2025-08-05 16:44:28'),
 (3, 'sample', 'sample@gmail.com', '$2y$10$whHwHabh.saGV6mOkSfyoOM4Byh9FNgnGrPb5UGSMJ04XsixTJKgC', 'user', '2025-08-05 16:44:31'),
-(4, 'staff', 'staff@gmail.com', '$2y$10$bOwVUIbaqeRBgPfv9J79NOkE0Mqa88QsYvQ0L9pVf2QcMLbpOd5wG', 'staff', '2025-08-05 16:44:33'),
+(4, 'staff', 'staff@gmail.com', '$2y$10$bOwVUIbaqeRBgPfv9J79NOkE0Mqa88QsYvQ0L9pVf2QcMLbpOd5wG', 'user', '2025-08-11 11:27:53'),
 (5, 'echo', 'echo@gmail.com', '$2y$10$H7OWAaqSQIUkw9wvUUj89uViY7ePYcfa7d5Mfil1dyr9dAv.NBNx2', 'admin', '2025-07-29 17:05:38'),
 (7, 'user', 'user@gmail.com', '$2y$10$WipQmEJeNWxdOvVrO1TRu./SGEBrBcwsa.KcEEUkNUCvaUSRw.A8C', 'user', '2025-08-07 05:13:51'),
 (8, 'dummy', 'dummy@gmail.com', '$2y$10$pbAus2MDidASclgb0B3sYet6rurIKX3Ign6ZppZCli8NKInPMJYry', 'user', '2025-08-07 05:14:09');
@@ -259,7 +246,14 @@ ALTER TABLE `categories`
 ALTER TABLE `itineraries`
   ADD PRIMARY KEY (`itinerary_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `place_id` (`place_id`);
+  ADD KEY `place_id` (`place_id`),
+  ADD KEY `location_id` (`location_id`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`location_id`);
 
 --
 -- Indexes for table `places`
@@ -287,6 +281,12 @@ ALTER TABLE `place_categories`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`staff_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -312,7 +312,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `places`
@@ -333,6 +339,12 @@ ALTER TABLE `place_categories`
   MODIFY `place_categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
+-- AUTO_INCREMENT for table `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -347,7 +359,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `itineraries`
   ADD CONSTRAINT `itineraries_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `itineraries_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `itineraries_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `places` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `itineraries_ibfk_3` FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`);
 
 --
 -- Constraints for table `places`

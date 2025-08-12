@@ -6,6 +6,7 @@ $places = $data->get_places();
 
 $place_categories = $data->get_place_categories();
 $itineraries = $data->get_itineraries();
+$locations = $data->get_locations();
 // Get current place details
 $current_place = null;
 foreach ($places as $place) {
@@ -18,7 +19,7 @@ foreach ($places as $place) {
 
 // Get related places (excluding current one)
 $related_places = array_filter($places, function ($p) use ($current_place) {
-    return $p['place_id'] != $current_place['place_id'] && $p['location'] == $current_place['location'];
+    return $p['place_id'] != $current_place['place_id'] && $p['location_id'] == $current_place['location_id'];
 });
 
 // Limit related places to 3
@@ -384,7 +385,12 @@ $related_places = array_slice($related_places, 0, 3);
                     <div class="place-meta">
                         <span class="place-meta-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <?php echo htmlspecialchars($current_place['location']); ?>
+                            <?php foreach($locations as $location){
+                                if($current_place['location_id'] == $location['location_id']){
+                                    echo htmlspecialchars($location['location_name']);
+                                }
+                            }
+                            ?>
                         </span>
                         <span class="place-meta-item">
                             <i class="fas fa-star"></i>
@@ -429,7 +435,12 @@ $related_places = array_slice($related_places, 0, 3);
                 <div class="place-details">
                     <div class="detail-item">
                         <h3><i class="fas fa-info-circle"></i> Quick Facts</h3>
-                        <p><strong>Location:</strong> <?php echo htmlspecialchars($current_place['location']); ?></p>
+                        <p><strong>Location:</strong>  <?php foreach($locations as $location){
+                                if($current_place['location_id'] == $location['location_id']){
+                                    echo htmlspecialchars($location['location_name']);
+                                }
+                            }
+                            ?></p>
                         <p><strong>Best Time to Visit:</strong>
                             <?php echo htmlspecialchars($current_place['best_time_to_visit'] ?? 'Year-round'); ?></p>
                         <p><strong>Entry Fee:</strong>
@@ -458,6 +469,8 @@ $related_places = array_slice($related_places, 0, 3);
 
                                 <div class="itinerary-btn">
                     <form action="" method="POST">
+
+                        <input type="hidden" name="location_id" value="<?php echo $current_place['location_id']; ?>">
                         <?php 
                         $place_has_itinerary = false;
         

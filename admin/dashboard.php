@@ -2,9 +2,8 @@
     include("../database/database.php");
     $places = $data->get_places();
     $activities = $data->get_activities();
+    $categories = $data->get_categories();
     $monthlyUsers = $data->get_monthly_users();
-    $data->session_staff("login.php");
-    $itineraries = $data->get_itineraries();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Travel Management Dashboard</title>
     <style>
         :root {
@@ -29,7 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
@@ -276,22 +274,16 @@
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </div>
+                <a href="add-staff.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Add Place</span>
-                </div>
-                <a href="add-place-activity.php" style="color: inherit; text-decoration: none;">
-                <div class="nav-item">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Add Place Activity</span>
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Create Staff</span>
                 </div>
                 </a>
-                <a href="add-place-category.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Add Place Category</span>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Locations</span>
                 </div>
-                </a>
                 <div class="nav-item">
                     <i class="fas fa-hiking"></i>
                     <span>Activities</span>
@@ -299,6 +291,10 @@
                 <div class="nav-item">
                     <i class="fas fa-route"></i>
                     <span>Itineraries</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
                 </div>
             </div>
         </div>
@@ -309,7 +305,7 @@
                 <h1>Dashboard Overview</h1>
                 <div class="user-info">
                     <img src="../assets/images/1_upscaled.jpg" alt="User">
-                    <span><a href="logout.php" style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span>
+                    <span><a href="../otherPages/logout.php" style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span>
                 </div>
             </div>
             
@@ -317,15 +313,7 @@
             <div class="stats-container">
                 <div class="stat-card">
                     <h3>Total Places</h3>
-                    <div class="value" id="total-locations"><?php
-                     $matchCount = 0;
-                     foreach($places as $place){
-                        if($_SESSION['location_id'] == $place['location_id']){
-                            $matchCount++;
-                        }
-                     }
-                     echo $matchCount;
-                     ?></div>
+                    <div class="value" id="total-locations"><?php echo count($places); ?></div>
                     <div class="trend up">
                         <i class="fas fa-arrow-up"></i>
                         <span>12% from last month</span>
@@ -340,18 +328,8 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <h3>Itineraries Created</h3>
-                    <div class="value" id="total-itineraries">
-                        <?php
-                        $matchCount = 0;
-                        foreach($itineraries as $itinerary){
-                            if($itinerary['location_id'] == $_SESSION['location_id']){
-                                $matchCount++;
-                            }
-                        }
-                        echo $matchCount;
-                        ?>
-                    </div>
+                    <h3>Category Created</h3>
+                    <div class="value" id="total-categories"><?php echo count($categories); ?></div>
                     <div class="trend down">
                         <i class="fas fa-arrow-down"></i>
                         <span>3% from last month</span>

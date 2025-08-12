@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let allPlaces = window.placesData || [];
     let filteredPlaces = [];
 
+    // Filter places by current location_id if set
+    if (window.currentLocationId) {
+        allPlaces = allPlaces.filter(place => place.location_id == window.currentLocationId);
+    }
+
+    // Initialize places table as visible
+    placesTable.style.display = 'table';
+    noResults.style.display = 'none';
+
     // Initialize places table as visible
     placesTable.style.display = 'table';
     noResults.style.display = 'none';

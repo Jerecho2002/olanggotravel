@@ -3,6 +3,7 @@ include("../database/database.php");
 $places = $data->get_places();
 $activities = $data->get_activities();
 $data->add_place_activity();
+$data->session_staff("login.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -438,20 +439,12 @@ $data->add_place_activity();
                     </div>
                 </a>
                 <div class="nav-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Locations</span>
-                </div>
-                <div class="nav-item">
                     <i class="fas fa-hiking"></i>
                     <span>Activities</span>
                 </div>
                 <div class="nav-item">
                     <i class="fas fa-route"></i>
                     <span>Itineraries</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-users"></i>
-                    <span>Users</span>
                 </div>
             </div>
         </div>
@@ -462,7 +455,7 @@ $data->add_place_activity();
                 <h1>Add Place Activity</h1>
                 <div class="user-info">
                     <img src="../assets/images/1_upscaled.jpg" alt="User">
-                    <span><span><a href="../otherPages/logout.php"
+                    <span><span><a href="logout.php"
                                 style="text-decoration: none; color: black; font-weight: bold;">Logout</a></span></span>
                 </div>
             </div>
@@ -509,9 +502,12 @@ $data->add_place_activity();
                                 <th>Place Name</th>
                             </tr>
                         </thead>
-                        <tbody id="placesTableBody">
-                            <!-- Results will be loaded here -->
-                        </tbody>
+                        <tbody id="placesTableBody"></tbody>
+                         <script>
+                            // Pass PHP data to JavaScript
+                            window.placesData = <?php echo json_encode($places); ?>;
+                            window.currentLocationId = <?php echo $_SESSION['location_id'] ?? 'null'; ?>;
+                        </script>
                     </table>
                     <div id="noResults" class="no-results" style="display: none;">No places found matching your search.
                     </div>
