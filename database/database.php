@@ -36,18 +36,40 @@ class Database
     {
         if (isset($_POST['register'])) {
             $roles = $_POST['roles'];
+            $user_img = $_POST['user_img'];
             $registerName = filter_input(INPUT_POST, 'registerName', FILTER_SANITIZE_STRING);
             $registerEmail = filter_input(INPUT_POST, 'registerEmail', FILTER_SANITIZE_EMAIL);
             $registerPass = filter_input(INPUT_POST, 'registerPass', FILTER_SANITIZE_STRING);
             $registerPassHash = password_hash($registerPass, PASSWORD_BCRYPT);
 
-            $query = $this->conn()->prepare("INSERT INTO users(username, email, password, roles) VALUES (:username, :email, :password, :roles)");
+            $check_query = $this->conn()->prepare("SELECT email FROM users WHERE email = ?");
+            $check_query->execute([$registerEmail]);
+
+            if( $check_query->rowCount() > 0) {
+                header("Location: signup.php");
+                exit();
+            }else{
+            $query = $this->conn()->prepare("INSERT INTO users(username, email, password, roles, user_img) VALUES (?,?,?,?,?)");
             $query->execute([
-                'username' => $registerName,
-                'email' => $registerEmail,
-                'password' => $registerPassHash,
-                'roles' => $roles,
+                $registerName,
+                $registerEmail,
+                $registerPassHash,
+                $roles,
+                $user_img
             ]);
+
+            $getIdQuery = $this->conn()->prepare("SELECT user_id FROM users WHERE email = :email");
+            $getIdQuery->execute(['email' => $registerEmail]);
+            $user_id = $getIdQuery->fetchColumn();
+
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['user_email'] = $registerEmail;
+
+            if($roles == 'user'){
+                header("Location: add-profile.php");
+                exit();
+            }
+        }
         }
     }
 
@@ -64,9 +86,17 @@ class Database
 
             $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
+            $check_query = $this->conn()->prepare("SELECT email FROM staff WHERE email = ?");
+            $check_query->execute([$email]);
+
+            if( $check_query->rowCount() > 0) {
+                header("Location: signup.php");
+            }
+            else{
             $query = $this->conn()->prepare("INSERT INTO staff(username, email, password, location_id, staff_img) VALUES(?,?,?,?,?)");
             $query->execute([$username, $email, $passwordHash, $location_id, $img]);
             move_uploaded_file($img_tmp_name, $img_folder);
+            }
         }
     }
 
@@ -94,7 +124,6 @@ class Database
                     }
                 }
             }
-
         }
     }
 
@@ -120,8 +149,21 @@ class Database
                     }
                 }
             }
-
         }
+    
+    public function insert_img_user(){
+        if(isset($_POST['upload_img'])){
+            $user_id = $_SESSION['user_id'];
+
+            $img = $_FILES['user_img']['name'];
+            $img_tmp_name = $_FILES['user_img']['tmp_name'];
+            $img_folder = '../assets/images/' . $img;
+
+            $query = $this->conn()->prepare("UPDATE users SET user_img = ? WHERE user_id = ?");
+            $query->execute([$img, $user_id]);
+            move_uploaded_file($img_tmp_name, $img_folder);
+        }
+    }
 
     public function get_places()
     {
@@ -282,7 +324,7 @@ class Database
 
     public function category_names($place_id)
     {
-        $query = "SELECT pc.place_id, c.category_name
+        $query = "SELECT pc.place_id, c.category_name, c.category_id
                   FROM place_categories pc
                   JOIN categories c ON c.category_id = pc.category_id
                   WHERE pc.place_id = ?";
@@ -293,7 +335,7 @@ class Database
 
     public function activity_names($place_id)
     {
-        $query = "SELECT pa.place_id, a.activity_name
+        $query = "SELECT pa.place_id, a.activity_name, a.activity_id
                   FROM place_activities pa
                   JOIN activities a ON a.activity_id = pa.activity_id
                   WHERE pa.place_id = ?";

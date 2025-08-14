@@ -59,6 +59,7 @@
                 </div>
                 
                 <input type="hidden" name="roles" value="user">
+                <input type="hidden" name="user_img" id="" value="user-default-img.png">
                 
                 <button type="submit" name="register" id="register-btn">
                     <span id="register-btn-text">Sign Up</span>

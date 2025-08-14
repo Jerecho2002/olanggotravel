@@ -33,7 +33,8 @@ $related_places = array_slice($related_places, 0, 3);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($current_place['place_name']); ?> | Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/loading.css">
     <style>
         /* Reset and base styling */
@@ -178,23 +179,29 @@ $related_places = array_slice($related_places, 0, 3);
         }
 
         .tag {
-            background: #E3F2FD;  /* Very light blue */
-            color: #1976D2;       /* Medium blue */
+            background: #E3F2FD;
+            /* Very light blue */
+            color: #1976D2;
+            /* Medium blue */
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.8em;
             font-weight: 500;
-            border: 1px solid #BBDEFB; /* Light blue border */
+            border: 1px solid #BBDEFB;
+            /* Light blue border */
         }
 
         .tag1 {
-            background: #E8F5E9;  /* Very light green */
-            color: #388E3C;      /* Medium green */
+            background: #E8F5E9;
+            /* Very light green */
+            color: #388E3C;
+            /* Medium green */
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.8em;
             font-weight: 500;
-            border: 1px solid #C8E6C9; /* Light green border */
+            border: 1px solid #C8E6C9;
+            /* Light green border */
         }
 
         /* Gallery */
@@ -331,7 +338,7 @@ $related_places = array_slice($related_places, 0, 3);
             }
         }
 
-        .itinerary-btn button{
+        .itinerary-btn button {
             font-family: 'Poppins', sans-serif;
             font-weight: bold;
             background-color: rgba(250, 183, 0, 1);
@@ -341,21 +348,24 @@ $related_places = array_slice($related_places, 0, 3);
             cursor: pointer;
             transition: 0.5s ease;
         }
-        .itinerary-btn button:hover{
+
+        .itinerary-btn button:hover {
             background-color: rgba(255, 194, 25, 1);
             color: rgba(49, 49, 49, 1);
         }
-        .itinerary-btn button i{
+
+        .itinerary-btn button i {
             transition: transform 0.5s ease;
         }
-        .itinerary-btn button:hover i{
+
+        .itinerary-btn button:hover i {
             transform: rotate(360deg);
         }
     </style>
 </head>
 
 <body>
-  <div id="loading-overlay">
+    <div id="loading-overlay">
         <div class="loader-content">
             <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
             <div class="dot-loader">
@@ -385,8 +395,8 @@ $related_places = array_slice($related_places, 0, 3);
                     <div class="place-meta">
                         <span class="place-meta-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <?php foreach($locations as $location){
-                                if($current_place['location_id'] == $location['location_id']){
+                            <?php foreach ($locations as $location) {
+                                if ($current_place['location_id'] == $location['location_id']) {
                                     echo htmlspecialchars($location['location_name']);
                                 }
                             }
@@ -419,28 +429,28 @@ $related_places = array_slice($related_places, 0, 3);
                     <?php $activities = $data->activity_names($_GET['place_id']); ?>
                     <h2 style="margin-top: 1rem;">Activities</h2>
                     <div class="tag-list">
-                            <?php foreach($activities as $activity) : ?>
+                        <?php foreach ($activities as $activity): ?>
                             <span class="tag"><?php echo $activity['activity_name']; ?></span>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </div>
                     <?php $activities = $data->category_names($_GET['place_id']); ?>
                     <h2 style="margin-top: 1rem;">Services</h2>
                     <div class="tag-list">
-                            <?php foreach($activities as $activity) : ?>
+                        <?php foreach ($activities as $activity): ?>
                             <span class="tag1"><?php echo $activity['category_name']; ?></span>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="place-details">
                     <div class="detail-item">
                         <h3><i class="fas fa-info-circle"></i> Quick Facts</h3>
-                        <p><strong>Location:</strong>  <?php foreach($locations as $location){
-                                if($current_place['location_id'] == $location['location_id']){
-                                    echo htmlspecialchars($location['location_name']);
-                                }
+                        <p><strong>Location:</strong> <?php foreach ($locations as $location) {
+                            if ($current_place['location_id'] == $location['location_id']) {
+                                echo htmlspecialchars($location['location_name']);
                             }
-                            ?></p>
+                        }
+                        ?></p>
                         <p><strong>Best Time to Visit:</strong>
                             <?php echo htmlspecialchars($current_place['best_time_to_visit'] ?? 'Year-round'); ?></p>
                         <p><strong>Entry Fee:</strong>
@@ -467,26 +477,26 @@ $related_places = array_slice($related_places, 0, 3);
                         <p>Check weather conditions before visiting</p>
                     </div>
 
-                                <div class="itinerary-btn">
-                    <form action="" method="POST">
+                    <div class="itinerary-btn">
+                        <form action="" method="POST">
 
-                        <input type="hidden" name="location_id" value="<?php echo $current_place['location_id']; ?>">
-                        <?php 
-                        $place_has_itinerary = false;
-        
+                            <input type="hidden" name="location_id" value="<?php echo $current_place['location_id']; ?>">
+                            <?php
+                            $place_has_itinerary = false;
+
                             // Check if user is logged in before checking itineraries
-                            if(isset($_SESSION['user_id'])) {
-                                foreach($itineraries as $itinerary) {
-                                    if($itinerary['place_id'] == $_GET['place_id'] && $itinerary['user_id'] == $_SESSION['user_id']) {
+                            if (isset($_SESSION['user_id'])) {
+                                foreach ($itineraries as $itinerary) {
+                                    if ($itinerary['place_id'] == $_GET['place_id'] && $itinerary['user_id'] == $_SESSION['user_id']) {
                                         $place_has_itinerary = true;
                                         break;
                                     }
                                 }
                             }
                             ?>
-                            
-                            <?php if(isset($_SESSION['user_id'])): ?>
-                                <?php if($place_has_itinerary): ?>
+
+                            <?php if (isset($_SESSION['user_id'])): ?>
+                                <?php if ($place_has_itinerary): ?>
                                     <button type="submit" class="btn-remove" name="remove_itinerary">
                                         <i class="fas fa-minus-circle"></i> Remove Itinerary
                                     </button>
@@ -498,7 +508,7 @@ $related_places = array_slice($related_places, 0, 3);
                             <?php else: ?>
                                 <a href="login.php" class="btn-login">
                                     <button type="button">
-                                    <i class="fas fa-sign-in-alt"></i> Login to Add to Itinerary
+                                        <i class="fas fa-sign-in-alt"></i> Login to Add to Itinerary
                                     </button>
                                 </a>
                             <?php endif; ?>
@@ -552,48 +562,50 @@ $related_places = array_slice($related_places, 0, 3);
             ?>
 
             <div class="gallery-section">
-                <?php 
+                <?php
                 $show_heading = false;
-                
+
                 // First pass to determine if we should show the heading
                 foreach ($places as $place) {
-                    if ($place['place_id'] == $_GET['place_id']) continue;
-                    
+                    if ($place['place_id'] == $_GET['place_id'])
+                        continue;
+
                     $other_place_categories = [];
                     foreach ($place_categories as $pc) {
                         if ($pc['place_id'] == $place['place_id']) {
                             $other_place_categories[] = $pc['category_id'];
                         }
                     }
-                    
+
                     $shared_categories = array_intersect($place_categories_matched, $other_place_categories);
                     if (!empty($shared_categories)) {
                         $show_heading = true;
                         break; // We only need one match to show the heading
                     }
                 }
-                
+
                 // Now display the heading if needed
                 if ($show_heading) {
                     echo '<h2>You may also like</h2>';
                 }
                 ?>
-                
+
                 <div class="gallery-grid">
                     <?php foreach ($places as $place): ?>
                         <?php
-                        if ($place['place_id'] == $_GET['place_id']) continue;
-                        
+                        if ($place['place_id'] == $_GET['place_id'])
+                            continue;
+
                         $other_place_categories = [];
                         foreach ($place_categories as $pc) {
                             if ($pc['place_id'] == $place['place_id']) {
                                 $other_place_categories[] = $pc['category_id'];
                             }
                         }
-                        
+
                         $shared_categories = array_intersect($place_categories_matched, $other_place_categories);
                         ?>
-                        
+
                         <?php if (!empty($shared_categories)): ?>
                             <div class="gallery-item">
                                 <img src="../assets/images/<?php echo $place['place_img']; ?>"
@@ -622,3 +634,17 @@ $related_places = array_slice($related_places, 0, 3);
 
 </html>
 <script src="../assets/js/loading.js"></script>
+<script src="../assets/js/lenisCode.js"></script>
+<script>
+    const lenis = new Lenis({
+        lerp: 0.1,
+        smooth: true
+    })
+
+    function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+</script>
