@@ -1,0 +1,160 @@
+/* itinerary style */
+      .plan-itinerary-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.plan-itinerary-container h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.plan-itinerary-container .subtitle {
+    color: #7f8c8d;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: normal;
+}
+
+/* Filter Section */
+.plan-itinerary-container .filter-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.plan-itinerary-container .filter-group {
+    margin-bottom: 20px;
+}
+
+.plan-itinerary-container .filter-group h4 {
+    color: #3498db;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.plan-itinerary-container .filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.plan-itinerary-container .filter-label {
+    position: relative;
+    cursor: pointer;
+}
+
+.plan-itinerary-container .filter-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.plan-itinerary-container .filter-name {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #ecf0f1;
+    border-radius: 20px;
+    color: #34495e;
+    transition: all 0.3s ease;
+}
+
+.plan-itinerary-container .filter-checkbox:checked + .filter-name {
+    background: #3498db;
+    color: white;
+}
+
+.plan-itinerary-container .filter-checkbox:focus + .filter-name {
+    box-shadow: 0 0 0 2px #bdc3c7;
+}
+
+/* Clear Button */
+.plan-itinerary-container .clear-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.plan-itinerary-container .clear-btn:hover {
+    background: #c0392b;
+}
+
+/* Selection Message */
+.plan-itinerary-container .selection-message {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-size: 18px;
+}
+
+.plan-itinerary-container .selection-message i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #bdc3c7;
+    display: block;
+}
+
+/* Places Container */
+.plan-itinerary-container .places-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.plan-itinerary-container .place-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.plan-itinerary-container .place-card:hover {
+    transform: translateY(-5px);
+}
+
+.plan-itinerary-container .place-name {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.plan-itinerary-container .duration {
+    color: #7f8c8d;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.plan-itinerary-container .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.plan-itinerary-container .tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: #ecf0f1;
+    color: #34495e;
+}
+
+.plan-itinerary-container .category-tag {
+    background: #e8f4fc;
+    color: #2980b9;
+}
+
+.plan-itinerary-container .activity-tag {
+    background: #f0f8e8;
+    color: #27ae60;
+}
