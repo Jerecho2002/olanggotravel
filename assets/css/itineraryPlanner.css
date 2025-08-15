@@ -47,6 +47,7 @@
 .plan-itinerary-container .filter-label {
     position: relative;
     cursor: pointer;
+    user-select: none;
 }
 
 .plan-itinerary-container .filter-checkbox {

@@ -109,7 +109,6 @@ shuffle($places);
                     <li><a href="otherPages/faq.html">FAQ</a></li>
                 </ul>
                 <!-- Search Bar in your navbar -->
-                <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="search-container">
                         <div class="search-bar" id="search-bar">
                             <input type="text" id="place-search" placeholder="Search destinations..." autocomplete="off">
@@ -119,7 +118,6 @@ shuffle($places);
                             <div class="search-results" id="search-results"></div>
                         </div>
                     </div>
-                <?php endif; ?>
                 <ul class="auth-links">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <div class="profile-gear-container">
@@ -155,38 +153,16 @@ shuffle($places);
         <div class="hero-section">
             <div class="carousel">
                 <div class="carousel-inner">
+                    <?php foreach($places as $place) : ?>
                     <div class="carousel-item">
-                        <img src="assets/images/1_upscaled.jpg" alt="Beautiful Island View">
+                        <img src="assets/images/<?php echo $place['place_img'] ?>" alt="Beautiful Island View">
                         <div class="carousel-caption">
-                            <h1>Discover Paradise</h1>
-                            <p>Explore the breathtaking islands of Olanggo with our exclusive tours</p>
-                            <a href="#" class="btn">Show Activities</a>
+                            <h1><?php echo $place['place_name']; ?></h1>
+                            <p><?php echo $place['description'] ?></p>
+                            <a href="otherPages/place-choice.php?place_id=<?php echo $place['place_id']; ?>" class="btn"> See place </a>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/2_upscaled.jpg" alt="Crystal Clear Waters">
-                        <div class="carousel-caption">
-                            <h1>Adventure Awaits</h1>
-                            <p>Create memories that will last a lifetime with our guided tours</p>
-                            <a href="#" class="btn">See Pictures</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/3_upscaled.jpg" alt="Sunset Beach">
-                        <div class="carousel-caption">
-                            <h1>Unforgettable Sunsets</h1>
-                            <p>Witness the most spectacular sunsets from our luxury beachfront resorts</p>
-                            <a href="#" class="btn">Explore Islands</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/4_upscaled.jpg" alt="Island Adventure">
-                        <div class="carousel-caption">
-                            <h1>Crystal Clear Waters</h1>
-                            <p>Dive into the most pristine waters and discover vibrant marine life</p>
-                            <a href="#" class="btn">Start Your Journey</a>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="carousel-controls">
@@ -199,10 +175,12 @@ shuffle($places);
                 </div>
 
                 <div class="carousel-indicators">
-                    <div class="carousel-indicator active" data-slide-to="0"></div>
-                    <div class="carousel-indicator" data-slide-to="1"></div>
-                    <div class="carousel-indicator" data-slide-to="2"></div>
-                    <div class="carousel-indicator" data-slide-to="3"></div>
+                    <?php $dataSlide = 0?>
+                    <?php foreach($places as $place) : ?>
+                    <?php if($dataSlide >= 5) break; ?>
+                    <div class="carousel-indicator active" data-slide-to="<?php echo $dataSlide ?>"></div>
+                    <?php $dataSlide++; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -233,7 +211,7 @@ shuffle($places);
                             <div class="text-content">
                                 <h3><?= htmlspecialchars($place['place_name']) ?></h3>
                                 <p><?= htmlspecialchars($place['description']) ?></p>
-                                <a href="#">Read more</a>
+                                <a href="otherPages/place-choice.php?place_id=<?php echo $place['place_id']; ?>"> Read more </a>
                             </div>
                             <img src="assets/images/<?= htmlspecialchars($place['place_img']) ?>"
                                 alt="<?= htmlspecialchars($place['place_name']) ?>">
@@ -358,31 +336,7 @@ shuffle($places);
     <script src="assets/js/dropdown.js"></script>
     <script src="assets/js/scrollEffect.js"></script>
     <script src="assets/js/itineraryPlanner.js"></script>
-    <script>
-        //back home
-        document.querySelector(".back-home i").addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        });
-
-        function scroll() {
-            const backHome = document.querySelector(".back-home i");
-            const triggerPosition = 150;
-
-            if (backHome) {
-                backHome.style.visibility = window.scrollY > triggerPosition ? 'visible' : 'hidden';
-            }
-        }
-
-        // Run when page loads
-        scroll();
-
-        // Run when scrolling
-        window.addEventListener("scroll", scroll);
-
-    </script>
+    <script src="assets/js/backHomescroll.js"></script>
     <script>
         //global variable for search bar
         window.searchPlacesData = <?php echo json_encode($places); ?>;

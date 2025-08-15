@@ -58,12 +58,13 @@ class Database
                 $user_img
             ]);
 
-            $getIdQuery = $this->conn()->prepare("SELECT user_id FROM users WHERE email = :email");
-            $getIdQuery->execute(['email' => $registerEmail]);
-            $user_id = $getIdQuery->fetchColumn();
+            $Query = $this->conn()->prepare("SELECT user_id, user_img FROM users WHERE email = :email");
+            $Query->execute(['email' => $registerEmail]);
+            $user = $Query->fetch();
 
-            $_SESSION['user_id'] = $user_id;
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_email'] = $registerEmail;
+            $_SESSION['user_img'] = $user['user_img'];
 
             if($roles == 'user'){
                 header("Location: add-profile.php");
@@ -245,7 +246,7 @@ class Database
 
             $place_id = filter_input(INPUT_POST, 'place_id', FILTER_SANITIZE_NUMBER_INT);
             $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
-            $user_id = $_SESSION['staff_id'];
+            $staff_id = $_SESSION['staff_id'];
 
             $check_query = $this->conn()->prepare("SELECT * FROM place_categories WHERE place_id = ? AND category_id = ?");
             $check_query->execute([$place_id, $category_id]);
@@ -253,8 +254,8 @@ class Database
             if ($check_query->rowCount() > 0) {
                 header("Location: add-place-category.php");
             } else {
-                $query = $this->conn()->prepare("INSERT INTO place_categories(user_id, place_id, category_id) VALUES(?,?,?)");
-                $query->execute([$user_id, $place_id, $category_id]);
+                $query = $this->conn()->prepare("INSERT INTO place_categories(staff_id, place_id, category_id) VALUES(?,?,?)");
+                $query->execute([$staff_id, $place_id, $category_id]);
             }
         }
     }
@@ -264,7 +265,7 @@ class Database
         if (isset($_POST["add_place_activity"])) {
             $place_id = filter_input(INPUT_POST, 'place_id', FILTER_SANITIZE_NUMBER_INT);
             $activity_id = filter_input(INPUT_POST, 'activity_id', FILTER_SANITIZE_NUMBER_INT);
-            $user_id = $_SESSION['staff_id'];
+            $staff_id = $_SESSION['staff_id'];
 
             $check_query = $this->conn()->prepare("SELECT * FROM place_activities WHERE place_id = ? AND activity_id = ?");
             $check_query->execute([$place_id, $activity_id]);
@@ -272,8 +273,8 @@ class Database
             if ($check_query->rowCount() > 0) {
                 header("Location: add-place-activity.php");
             } else {
-                $query = $this->conn()->prepare("INSERT INTO place_activities(user_id, place_id, activity_id) VALUES(?,?,?)");
-                $query->execute([$user_id, $place_id, $activity_id]);
+                $query = $this->conn()->prepare("INSERT INTO place_activities(staff_id, place_id, activity_id) VALUES(?,?,?)");
+                $query->execute([$staff_id, $place_id, $activity_id]);
             }
         }
     }

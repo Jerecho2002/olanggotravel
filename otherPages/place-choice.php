@@ -338,10 +338,10 @@ $related_places = array_slice($related_places, 0, 3);
             }
         }
 
-        .itinerary-btn button {
+        .itinerary-btn .btn-add {
             font-family: 'Poppins', sans-serif;
-            font-weight: bold;
-            background-color: rgba(250, 183, 0, 1);
+            background-color: #00A896;
+            color: #ffffff;
             border-radius: 10px;
             padding: 0.7rem 1.5rem;
             border: none;
@@ -349,17 +349,29 @@ $related_places = array_slice($related_places, 0, 3);
             transition: 0.5s ease;
         }
 
-        .itinerary-btn button:hover {
-            background-color: rgba(255, 194, 25, 1);
-            color: rgba(49, 49, 49, 1);
+        .itinerary-btn .btn-add:hover {
+            background-color: #028090;
+        }
+        .itinerary-btn .btn-add:active{
+            background-color: #05668D;
         }
 
-        .itinerary-btn button i {
-            transition: transform 0.5s ease;
+        .itinerary-btn .btn-remove {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FF6B6B;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.5s ease;
         }
 
-        .itinerary-btn button:hover i {
-            transform: rotate(360deg);
+        .itinerary-btn .btn-remove:hover {
+            background-color: #E05555;
+        }
+        .itinerary-btn .btn-remove:active{
+            background-color: #C73E3E;
         }
     </style>
 </head>
@@ -498,17 +510,17 @@ $related_places = array_slice($related_places, 0, 3);
                             <?php if (isset($_SESSION['user_id'])): ?>
                                 <?php if ($place_has_itinerary): ?>
                                     <button type="submit" class="btn-remove" name="remove_itinerary">
-                                        <i class="fas fa-minus-circle"></i> Remove Itinerary
+                                        <i class="fas fa-minus-circle"></i> Remove to Plan
                                     </button>
                                 <?php else: ?>
                                     <button type="submit" name="add_itinerary" class="btn-add">
-                                        <i class="fas fa-plus-circle"></i> Add Itinerary
+                                        <i class="fas fa-plus-circle"></i> Save to Plan
                                     </button>
                                 <?php endif; ?>
                             <?php else: ?>
                                 <a href="login.php" class="btn-login">
-                                    <button type="button">
-                                        <i class="fas fa-sign-in-alt"></i> Login to Add to Itinerary
+                                    <button type="button" class="btn-add">
+                                        <i class="fas fa-sign-in-alt"></i> Login to Save to Travel Plan
                                     </button>
                                 </a>
                             <?php endif; ?>
