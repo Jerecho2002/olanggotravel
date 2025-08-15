@@ -45,6 +45,30 @@ shuffle($places);
             min-height: 100vh;
             height: 100%;
         }
+
+        .footer {
+            font-family: 'Poppins', sans-serif;
+            background: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .back-home i {
+            background-color: rgba(192, 192, 192, 0.8);
+            padding: 1.5rem;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 20px; /* small gap from bottom */
+            right: 20px;  /* small gap from right */
+            z-index: 9999;
+            cursor: pointer;
+        }
+        .back-home i:hover {
+            background-color: rgb(192, 192, 192);
+            transition: background-color 0.3s ease;
+        }
+
     </style>
 </head>
 
@@ -57,14 +81,18 @@ shuffle($places);
             </div>
         </div>
     </div>
-    
+
+    <div class="back-home">
+        <i class="fa-solid fa-chevron-up"></i>
+    </div>
 
     <div class="home-container">
         <div class="header" id="header">
-            <div class="header-left">
-                <p><i class="fa fa-phone"></i> 63+ 0993 493 6769 </p>
-                <span>|</span>
-                <p><i class="fa fa-envelope"></i> OlanggoTravels@gmail.com</p>
+            <div class="header-right">
+                <div class="logo">
+                    <img src="assets/images/logo2-removebg-preview.png" alt="">
+                    <a href="#header" style="font-family: 'Kaushan Script', cursive;">OlanggoTravels</a>
+                </div>
             </div>
             <div class="header-right">
                 <a href="#"><i class="fa-brands fa-facebook"></i> OlanggoTravels</a>
@@ -75,10 +103,6 @@ shuffle($places);
 
         <div class="container-navbar" id="container-navbar">
             <nav>
-                <div class="logo">
-                    <img src="assets/images/logo2-removebg-preview.png" alt="">
-                    <a href="#header" style="font-family: 'Kaushan Script', cursive;">OlanggoTravels</a>
-                </div>
                 <ul class="nav-links">
                     <li class="activities-link"><a href="#"><i class="fa-solid fa-chevron-down"></i> Contents</a></li>
                     <li><a href="#itinerary-planner">Plan your trip</a></li>
@@ -86,15 +110,15 @@ shuffle($places);
                 </ul>
                 <!-- Search Bar in your navbar -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                <div class="search-container">
-                    <div class="search-bar" id="search-bar">
-                        <input type="text" id="place-search" placeholder="Search destinations..." autocomplete="off">
-                        <button type="submit" class="search-btn">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                        <div class="search-results" id="search-results"></div>
+                    <div class="search-container">
+                        <div class="search-bar" id="search-bar">
+                            <input type="text" id="place-search" placeholder="Search destinations..." autocomplete="off">
+                            <button type="submit" class="search-btn">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <div class="search-results" id="search-results"></div>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
                 <ul class="auth-links">
                     <?php if (isset($_SESSION['user_id'])): ?>
@@ -224,68 +248,69 @@ shuffle($places);
 
         <!-- Itinerary Planner -->
         <div class="plan-itinerary-container" id="itinerary-planner">
-    <h1>Plan Your Perfect Itinerary</h1>
-    <h3 class="subtitle">Select your preferred activities and categories to see matching places</h3>
-    
-    <div class="filter-section">
-        <div class="filter-group">
-            <h4>Activities</h4>
-            <div class="filter-options activity-options">
-                <?php foreach($activities as $activity) : ?>
-                <label class="filter-label">
-                    <input type="checkbox" class="filter-checkbox activity-filter" value="<?php echo $activity['activity_id']; ?>">
-                    <span class="filter-name"><?php echo $activity['activity_name']; ?></span>
-                </label>
+            <h1>Plan Your Perfect Itinerary</h1>
+            <h3 class="subtitle">Select your preferred activities and categories to see matching places</h3>
+
+            <div class="filter-section">
+                <div class="filter-group">
+                    <h4>Activities</h4>
+                    <div class="filter-options activity-options">
+                        <?php foreach ($activities as $activity): ?>
+                            <label class="filter-label">
+                                <input type="checkbox" class="filter-checkbox activity-filter"
+                                    value="<?php echo $activity['activity_id']; ?>">
+                                <span class="filter-name"><?php echo $activity['activity_name']; ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Services</h4>
+                    <div class="filter-options category-options">
+                        <?php foreach ($categories as $category): ?>
+                            <label class="filter-label">
+                                <input type="checkbox" class="filter-checkbox category-filter"
+                                    value="<?php echo $category['category_id']; ?>">
+                                <span class="filter-name"><?php echo $category['category_name']; ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <button class="clear-btn">Clear all filters</button>
+            </div>
+
+            <div id="no-selection-message" class="selection-message">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Please select activities or categories to see recommended places</p>
+            </div>
+
+            <div class="places-container" style="display:none">
+                <?php foreach ($places as $place): ?>
+                    <?php
+                    $placeCategories = $data->category_names($place['place_id']);
+                    $placeActivities = $data->activity_names($place['place_id']);
+                    $categoryIds = array_column($placeCategories, 'category_id');
+                    $activityIds = array_column($placeActivities, 'activity_id');
+                    ?>
+                    <div class="place-card" data-place-id="<?php echo $place['place_id']; ?>"
+                        data-categories="<?php echo implode(',', $categoryIds); ?>"
+                        data-activities="<?php echo implode(',', $activityIds); ?>">
+                        <h2 class="place-name"><?php echo $place['place_name']; ?></h2>
+                        <p class="duration"><?php echo $place['duration']; ?></p>
+                        <div class="tags">
+                            <?php foreach ($placeCategories as $category): ?>
+                                <span class="tag category-tag"><?php echo $category['category_name']; ?></span>
+                            <?php endforeach; ?>
+                            <?php foreach ($placeActivities as $activity): ?>
+                                <span class="tag activity-tag"><?php echo $activity['activity_name']; ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
-        
-        <div class="filter-group">
-            <h4>Services</h4>
-            <div class="filter-options category-options">
-                <?php foreach($categories as $category) : ?>
-                <label class="filter-label">
-                    <input type="checkbox" class="filter-checkbox category-filter" value="<?php echo $category['category_id']; ?>">
-                    <span class="filter-name"><?php echo $category['category_name']; ?></span>
-                </label>
-                <?php endforeach; ?>
-            </div>
-        </div>
-        
-        <button class="clear-btn">Clear all filters</button>
-    </div>
-    
-    <div id="no-selection-message" class="selection-message">
-        <i class="fas fa-map-marker-alt"></i>
-        <p>Please select activities or categories to see recommended places</p>
-    </div>
-    
-    <div class="places-container" style="display:none">
-        <?php foreach ($places as $place): ?>
-        <?php
-            $placeCategories = $data->category_names($place['place_id']);
-            $placeActivities = $data->activity_names($place['place_id']);
-            $categoryIds = array_column($placeCategories, 'category_id');
-            $activityIds = array_column($placeActivities, 'activity_id');
-        ?>
-        <div class="place-card" 
-             data-place-id="<?php echo $place['place_id']; ?>"
-             data-categories="<?php echo implode(',', $categoryIds); ?>"
-             data-activities="<?php echo implode(',', $activityIds); ?>">
-            <h2 class="place-name"><?php echo $place['place_name']; ?></h2>
-            <p class="duration"><?php echo $place['duration']; ?></p>
-            <div class="tags">
-                <?php foreach($placeCategories as $category) : ?>
-                <span class="tag category-tag"><?php echo $category['category_name']; ?></span>
-                <?php endforeach; ?>
-                <?php foreach($placeActivities as $activity) : ?>
-                <span class="tag activity-tag"><?php echo $activity['activity_name']; ?></span>
-                <?php endforeach; ?>
-            </div>
-        </div>
-        <?php endforeach; ?>
-    </div>
-</div>
 
         <!-- Activities -->
         <div class="container-activities" id="activities">
@@ -320,6 +345,12 @@ shuffle($places);
             </div>
         </div>
 
+        <footer class="footer">
+            <p>&copy; <?php echo date('Y'); ?> Olanggo Travel. All rights reserved.</p>
+            <span><i class="fa fa-envelope"></i> olanggotravel@gmail.com || <i class="fa fa-phone"></i> 63+ 0993 493
+                6769</span>
+        </footer>
+
     </div>
     <script src="assets/js/lenisCode.js"></script>
     <script src="assets/js/loading.js"></script>
@@ -327,6 +358,31 @@ shuffle($places);
     <script src="assets/js/dropdown.js"></script>
     <script src="assets/js/scrollEffect.js"></script>
     <script src="assets/js/itineraryPlanner.js"></script>
+    <script>
+        //back home
+        document.querySelector(".back-home i").addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        function scroll() {
+            const backHome = document.querySelector(".back-home i");
+            const triggerPosition = 150;
+
+            if (backHome) {
+                backHome.style.visibility = window.scrollY > triggerPosition ? 'visible' : 'hidden';
+            }
+        }
+
+        // Run when page loads
+        scroll();
+
+        // Run when scrolling
+        window.addEventListener("scroll", scroll);
+
+    </script>
     <script>
         //global variable for search bar
         window.searchPlacesData = <?php echo json_encode($places); ?>;

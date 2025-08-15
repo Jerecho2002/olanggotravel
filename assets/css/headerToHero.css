@@ -1,11 +1,13 @@
 .home-container .header {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding: 2rem 3rem;
     align-items: center;
-    background: linear-gradient(270deg, #0077B6, #00B4D8, #90E0EF);
+    background: var(--color-main);
     height: 3rem;
-    color: var(--color-main);
+    color: var(--color-teal);
     font-family: "Poppins", sans-serif;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
 .home-container .container-navbar {
@@ -23,15 +25,15 @@
 
 .home-container .header-right a {
     text-decoration: none;
-    color: var(--color-main);
+    color: var(--color-teal);
     font-weight: 600;
 }
 
 .home-container nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
-    height: 100%;
+    height: 6rem;
     padding: 0 2rem;
     align-items: center;
     background-color: var(--color-main);
@@ -110,7 +112,7 @@
     border-bottom: var(--color-teal) 1px solid;
 }
 
-.home-container nav img {
+.home-container .logo img {
     width: 8rem;
 }
 
@@ -156,7 +158,7 @@
 /* Modern Animated Search Bar Styles */
 .search-container {
     position: relative;
-    width: 320px;
+    width: 25rem;
     margin: 0 1.5rem;
     z-index: 1000;
 }

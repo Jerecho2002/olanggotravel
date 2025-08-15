@@ -42,7 +42,7 @@ $related_places = array_slice($related_places, 0, 3);
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif,Tahoma, Geneva, Verdana;
         }
 
         body {
