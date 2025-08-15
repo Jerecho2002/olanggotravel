@@ -263,7 +263,21 @@ $timeSlots = [
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
+<script src="../../assets/js/loading.js"></script>
+<script src="../../assets/js/lenisCode.js"></script>
+<script>
+    const lenis = new Lenis({
+        lerp: 0.1,
+        smooth: true
+    })
+
+    function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+</script>
 </body>
 
 </html>
-<script src="../../assets/js/loading.js"></script>

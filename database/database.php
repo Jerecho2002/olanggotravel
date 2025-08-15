@@ -106,7 +106,7 @@ class Database
             $loginEmail = filter_input(INPUT_POST, 'loginEmail', FILTER_SANITIZE_EMAIL);
             $loginPass = filter_input(INPUT_POST, 'loginPass', FILTER_SANITIZE_STRING);
 
-            $query = $this->conn()->prepare("SELECT user_id, password, roles FROM users WHERE email = :email");
+            $query = $this->conn()->prepare("SELECT user_id, user_img,password, roles FROM users WHERE email = :email");
             $query->execute([
                 'email' => $loginEmail,
             ]);
@@ -120,6 +120,7 @@ class Database
                     } else {
                         $_SESSION['user_email'] = $loginEmail;
                         $_SESSION['user_id'] = $user['user_id'];
+                        $_SESSION['user_img'] = $user['user_img'];
                         header("Location: ../index.php");
                     }
                 }

@@ -16,6 +16,7 @@ shuffle($places);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/loading.css">
     <link rel="stylesheet" href="assets/css/headerToHero.css">
@@ -76,7 +77,7 @@ shuffle($places);
             <nav>
                 <div class="logo">
                     <img src="assets/images/logo2-removebg-preview.png" alt="">
-                    <a href="#header">OlanggoTravels</a>
+                    <a href="#header" style="font-family: 'Kaushan Script', cursive;">OlanggoTravels</a>
                 </div>
                 <ul class="nav-links">
                     <li class="activities-link"><a href="#"><i class="fa-solid fa-chevron-down"></i> Contents</a></li>
@@ -99,7 +100,7 @@ shuffle($places);
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <div class="profile-gear-container">
                             <div class="profile-image-bg" id="profile-image-bg"
-                                style="background-image: url('assets/images/user-default-img.png');">
+                                style="background-image: url('assets/images/<?php echo $_SESSION['user_img']; ?>');">
                                 <!-- Profile image as background -->
                             </div>
                             <i class="fa-solid fa-gear gear-icon-front" id="gear-icon-front"></i>
