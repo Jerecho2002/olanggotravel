@@ -422,10 +422,12 @@ $data->session_staff("login.php");
                         <span>Dashboard</span>
                     </div>
                 </a>
+                <a href="add-place.php" style="color: inherit; text-decoration: none;">
                 <div class="nav-item">
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Place</span>
                 </div>
+                </a>
                 <a href="add-place-activity.php" style="color: inherit; text-decoration: none;">
                     <div class="nav-item active">
                         <i class="fas fa-plus-circle"></i>

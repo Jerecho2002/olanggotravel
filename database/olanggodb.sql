@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2025 at 10:27 AM
+-- Generation Time: Aug 17, 2025 at 06:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,6 +85,15 @@ CREATE TABLE `itineraries` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `itineraries`
+--
+
+INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `location_id`, `created_at`, `updated_at`) VALUES
+(46, 22, 8, 1, '2025-08-15 08:27:41', '2025-08-15 08:27:41'),
+(47, 22, 9, 1, '2025-08-15 08:27:55', '2025-08-15 08:27:55'),
+(48, 22, 11, 2, '2025-08-17 02:35:19', '2025-08-17 02:35:19');
+
 -- --------------------------------------------------------
 
 --
@@ -138,7 +147,9 @@ INSERT INTO `places` (`place_id`, `staff_id`, `place_name`, `nearest_index`, `pr
 (10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 2, '3_upscaled.jpg', '2025-08-02 00:02:49', '2025-08-15 07:50:45'),
 (11, 2, 'Kayaking Expedition', 2, '', '', 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 2, '4_upscaled.jpg', '2025-08-02 00:02:49', '2025-08-15 07:50:45'),
 (12, 3, 'Island Hopping', 3, '', '', 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 3, 'upscalemedia-transformed(5).jpeg', '2025-08-02 00:04:42', '2025-08-15 07:50:45'),
-(13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 3, 'upscalemedia-transformed (6).jpeg', '2025-08-02 00:04:42', '2025-08-15 07:50:45');
+(13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 3, 'upscalemedia-transformed (6).jpeg', '2025-08-02 00:04:42', '2025-08-15 07:50:45'),
+(16, 1, 'Olanggo Paradise', 1, '', '', 'A viewpoint for watching birds is at the end, where some very friendly staff will help you with binoculars.', '5-6 hours', 2, 'paradise.jpg', '2025-08-17 04:49:00', '2025-08-17 04:49:00'),
+(17, 3, 'Olanggo Wildlife Sanctuary', 3, '', '', 'The  Olango Wildlife Sanctuary is more than a hectare of sandflats and mangroves which serves as a refuge for thousands of migratory birds during the winter season in Siberia, Northern China, and Japan. This reserve was proclaimed a protected area in 1992 and was recognized as 1st site in the Philippines with a wetland of international importance, especially as a waterfowl habitat.', '2-4 hours', 3, 'Olango wildlife sanctuary footwalk.webp', '2025-08-17 04:53:26', '2025-08-17 04:53:26');
 
 -- --------------------------------------------------------
 
@@ -239,7 +250,7 @@ CREATE TABLE `staff` (
 INSERT INTO `staff` (`staff_id`, `username`, `email`, `password`, `location_id`, `staff_img`, `created_at`, `updated_at`) VALUES
 (1, 'staff', 'staff@gmail.com', '$2y$10$MGMalRYDB6Qy6WFOsUOIIe5KqRnv8iNi9pdI/.1/lDILE7c4RCzVe', 2, 'istockphoto-1499707292-1024x1024.jpg', '2025-08-11 11:26:11', '2025-08-12 21:16:38'),
 (2, 'staff1', 'staff1@gmail.com', '$2y$10$09ztDQ.rD5f1U.3ShMNlRutM4qrhSJXgZoP.K4iDDLCR5yZ37oFYW', 1, 'istockphoto-1499707292-1024x1024.jpg', '2025-08-14 04:56:41', '2025-08-14 04:56:41'),
-(3, 'staff2', 'staff2@gmail.com', '$2y$10$5sW2GlYLwcG7oSKcFcEdbOPGJkwi6fTCFlz00emtXSdVcyy3rDdaO', 3, '', '2025-08-14 04:56:48', '2025-08-14 04:56:48');
+(3, 'staff2', 'staff2@gmail.com', '$2y$10$5sW2GlYLwcG7oSKcFcEdbOPGJkwi6fTCFlz00emtXSdVcyy3rDdaO', 3, 'istockphoto-1499707292-1024x1024.jpg', '2025-08-14 04:56:48', '2025-08-17 04:54:41');
 
 -- --------------------------------------------------------
 
@@ -263,7 +274,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `user_img`, `roles`, `created_at`) VALUES
 (22, 'echo', 'echo@gmail.com', '$2y$10$yt8SywGKZf.5PSGESUGQ8u9oK9Pg2l6FftTFRC80wpbR0IQr1JgTe', 'user-default-img.png', 'user', '2025-08-15 07:53:08'),
-(23, 'echo1', 'echo1@gmail.com', '$2y$10$gE577X8zRXJcpzO./5VA3uD2ED/2MPivsmrgU2amkmrFgHfkZUYr2', 'user-default-img.png', 'user', '2025-08-15 07:56:43');
+(23, 'echo1', 'echo1@gmail.com', '$2y$10$gE577X8zRXJcpzO./5VA3uD2ED/2MPivsmrgU2amkmrFgHfkZUYr2', 'user-default-img.png', 'user', '2025-08-15 07:56:43'),
+(24, 'admin', 'admin@gmail.com', '$2y$10$E6/RjHtAzMrNynhM8qZT.OVbEo7Nm4ZGdW6pzQHywFqCszMYY4xmK', 'user-default-img.png', 'admin', '2025-08-17 04:07:02');
 
 --
 -- Indexes for dumped tables
@@ -353,7 +365,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `locations`
@@ -365,7 +377,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `places`
 --
 ALTER TABLE `places`
-  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `place_activities`
@@ -389,7 +401,7 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables

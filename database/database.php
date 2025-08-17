@@ -135,7 +135,7 @@ class Database
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-            $query = $this->conn()->prepare("SELECT staff_id, password, location_id FROM staff WHERE email = :email");
+            $query = $this->conn()->prepare("SELECT staff_id, password, location_id, staff_img FROM staff WHERE email = :email");
             $query->execute([
                 'email' => $email,
             ]);
@@ -145,6 +145,7 @@ class Database
                         $_SESSION['staff_email'] = $email;
                         $_SESSION['staff_id'] = $staff['staff_id'];
                         $_SESSION['location_id'] = $staff['location_id'];
+                        $_SESSION['staff_img'] = $staff['staff_img'];
                         header("Location: dashboard.php");
                     } else {
                         header("Location: login.php");
@@ -173,6 +174,13 @@ class Database
         $query->execute();
         $places = $query->fetchAll();
         return $places;
+    }
+
+    public function get_staffs(){
+        $query = $this->conn()->prepare("SELECT * FROM staff");
+        $query->execute();
+        $staffs = $query->fetchAll();
+        return $staffs;
     }
 
     public function get_locations(){
@@ -221,25 +229,6 @@ class Database
         return $query->fetchAll();
     }
 
-    public function insert_place()
-    {
-        if (isset($_POST['add_place'])) {
-            $user_id = $_SESSION['staff_id'];
-            $place_name = filter_input(INPUT_POST, 'place_name', FILTER_SANITIZE_STRING);
-            $nearest_index = filter_input(INPUT_POST, 'nearest_index', FILTER_SANITIZE_NUMBER_INT);
-            $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-            $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_STRING);
-            $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
-            $img = $_FILES['place_image']['name'];
-            $img_tmp_name = $_FILES['place_image']['tmp_name'];
-            $img_folder = '../assets/images/' . $img;
-
-            $query = $this->conn()->prepare("INSERT INTO places(user_id, place_name, nearest_index, description, duration, location, place_img) VALUES(?,?,?,?,?,?,?)");
-            $query->execute([$user_id, $place_name, $nearest_index, $description, $duration, $location, $img]);
-            move_uploaded_file($img_tmp_name, $img_folder);
-        }
-    }
-
     public function add_place_category()
     {
         if (isset($_POST["add_place_category"])) {
@@ -276,6 +265,24 @@ class Database
                 $query = $this->conn()->prepare("INSERT INTO place_activities(staff_id, place_id, activity_id) VALUES(?,?,?)");
                 $query->execute([$staff_id, $place_id, $activity_id]);
             }
+        }
+    }
+
+    public function add_place(){
+        if (isset($_POST['add-place'])) {
+            $staff_id = $_SESSION['staff_id'];
+            $place_name = filter_input(INPUT_POST, 'place_name', FILTER_SANITIZE_STRING);
+            $nearest_index = $_POST['nearest_index'];
+            $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+            $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_STRING);
+            $location_id = $_POST['location_id'];
+            $img = $_FILES['place_img']['name'];
+            $img_tmp_name = $_FILES['place_img']['tmp_name'];
+            $img_folder = '../assets/images/' . $img;
+
+            $query = $this->conn()->prepare("INSERT INTO places(staff_id, place_name, nearest_index, description, duration, location_id, place_img) VALUES(?,?,?,?,?,?,?)");
+            $query->execute([$staff_id, $place_name, $nearest_index, $description, $duration, $location_id, $img]);
+            move_uploaded_file($img_tmp_name, $img_folder);
         }
     }
 
