@@ -12,9 +12,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/loading.css">
     <link rel="stylesheet" href="../assets/css/user-login.css">
+    <link rel="stylesheet" href="../assets/css/alert.css">
 </head>
 
 <body>
+
+    <?php if(isset($_SESSION['login-error'])) : ?>
+    <div id="showMsg"> <?php echo "<script>const ErrorMessage = '" . $_SESSION['login-error'] . "';</script>"; ?></div>
+    <script src="../assets/js/errorAlert.js"></script>
+    <?php unset($_SESSION['login-error']); ?>
+    <?php endif; ?>
+
     <div id="loading-overlay">
         <div class="loader-content">
             <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">

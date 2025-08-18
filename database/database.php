@@ -34,6 +34,7 @@ class Database
 
     public function register()
     {
+        $errors = [];
         if (isset($_POST['register'])) {
             $roles = $_POST['roles'];
             $user_img = $_POST['user_img'];
@@ -45,9 +46,16 @@ class Database
             $check_query = $this->conn()->prepare("SELECT email FROM users WHERE email = ?");
             $check_query->execute([$registerEmail]);
 
-            if( $check_query->rowCount() > 0) {
-                header("Location: signup.php");
-                exit();
+            if($check_query->rowCount() > 0){
+                $errors[] = "Email is already taken";
+            }
+
+            if(strlen($registerPass) <= 3){
+                $errors[] = "Password is too short";
+            }
+
+            if(!empty($errors)){
+                $_SESSION['register-error'] = implode("<br>",$errors);
             }else{
             $query = $this->conn()->prepare("INSERT INTO users(username, email, password, roles, user_img) VALUES (?,?,?,?,?)");
             $query->execute([
@@ -65,6 +73,7 @@ class Database
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_email'] = $registerEmail;
             $_SESSION['user_img'] = $user['user_img'];
+            $_SESSION['register-success'] = "You are now registered!";
 
             if($roles == 'user'){
                 header("Location: add-profile.php");
@@ -103,6 +112,7 @@ class Database
 
     public function login()
     {
+        $errors = [];
         if (isset($_POST['login'])) {
             $loginEmail = filter_input(INPUT_POST, 'loginEmail', FILTER_SANITIZE_EMAIL);
             $loginPass = filter_input(INPUT_POST, 'loginPass', FILTER_SANITIZE_STRING);
@@ -117,14 +127,21 @@ class Database
                     if ($user['roles'] == 'admin') {
                         $_SESSION['admin_id'] = $user['user_id'];
                         header("Location: ../admin/dashboard.php");
-
                     } else {
                         $_SESSION['user_email'] = $loginEmail;
                         $_SESSION['user_id'] = $user['user_id'];
                         $_SESSION['user_img'] = $user['user_img'];
+                        $_SESSION['login_success'] = "You are now logged in!";
                         header("Location: ../index.php");
                     }
+                }else{
+                    $errors[] = "Invalid Password";
                 }
+            }else{
+                $errors[] = "Invalid email";
+            }
+            if(!empty($errors)){
+                $_SESSION['login-error'] = implode("<br>",$errors);
             }
         }
     }

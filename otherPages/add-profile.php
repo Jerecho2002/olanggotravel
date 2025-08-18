@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Profile Picture</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/loading.css">
+    <link rel="stylesheet" href="../assets/css/alert.css">
     <style>
         * {
             box-sizing: border-box;
@@ -112,6 +114,21 @@
     </style>
 </head>
 <body>
+    <?php if(isset($_SESSION['register-success'])) : ?>
+    <div id="showMsg"> <?php echo "<script>const SuccessMessage = '" . $_SESSION['register-success'] . "';</script>"; ?></div>
+    <script src="../assets/js/successAlert.js"></script>
+    <?php unset($_SESSION['register-success']); ?>
+    <?php endif; ?>
+
+    <div id="loading-overlay">
+        <div class="loader-content">
+            <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">
+            <div class="dot-loader">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <form action="" method="POST" enctype="multipart/form-data">
         <div class="profile-card">
             <h1>Add Profile Picture</h1>
@@ -139,7 +156,7 @@
             </div>
         </div>
     </form>
-
+    <script src="../assets/js/loading.js"></script>
     <script>
         // Simple image preview function
         function previewImage(input) {

@@ -11,8 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/loading.css">
     <link rel="stylesheet" href="../assets/css/user-sigup.css">
+    <link rel="stylesheet" href="../assets/css/alert.css">
 </head>
 <body>
+    <?php if(isset($_SESSION['register-error'])) : ?>
+    <div id="showMsg"> <?php echo "<script>const ErrorMessage = '" . $_SESSION['register-error'] . "';</script>"; ?></div>
+    <script src="../assets/js/errorAlert.js"></script>
+    <?php unset($_SESSION['register-error']); ?>
+    <?php endif; ?>
+
     <div id="loading-overlay">
         <div class="loader-content">
             <img src="../assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">

@@ -13,10 +13,10 @@ shuffle($places);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link href="assets/fonts/poppins.css"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+    <link href="assets/fonts/playfair.css" rel="stylesheet">
+    <link href="assets/fonts/kaushan.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/loading.css">
     <link rel="stylesheet" href="assets/css/headerToHero.css">
@@ -24,6 +24,8 @@ shuffle($places);
     <link rel="stylesheet" href="assets/css/mustSee.css">
     <link rel="stylesheet" href="assets/css/itineraryPlanner.css">
     <link rel="stylesheet" href="assets/css/profileGear.css">
+    <link rel="stylesheet" href="assets/css/alert.css">
+    <script src="assets/js/jquery.js"></script>
 
     <title>Olanggo Travels</title>
     <style>
@@ -69,10 +71,18 @@ shuffle($places);
             transition: background-color 0.3s ease;
         }
 
+        
+        
     </style>
 </head>
 
 <body>
+    <?php if(isset($_SESSION['login_success'])) : ?>
+    <div id="showMsg"> <?php echo "<script>const SuccessMessage = '" . $_SESSION['login_success'] . "';</script>"; ?></div>
+    <script src="assets/js/successAlert.js"></script>
+    <?php unset($_SESSION['login_success']); ?>
+    <?php endif; ?>
+
     <div id="loading-overlay">
         <div class="loader-content">
             <img src="assets/images/logo2-removebg-preview.png" alt="Logo" class="loading-logo">

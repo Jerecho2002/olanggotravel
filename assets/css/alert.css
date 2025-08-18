@@ -1,0 +1,75 @@
+#showMsg {
+    visibility: hidden;
+    position: fixed;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    top: 25%;
+    right: 0;
+    color: #000;
+    background-color: #fff6f6ff;
+    color: #fff;
+    border-radius: 6px;
+    border-left: 4px solid #2ecc71;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
+#showMsg .firstDiv {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    color: #34495e;
+}
+
+#showMsg .exit {
+    position: absolute;
+    color: #34495e;
+    font-size: 1rem;
+    right: 0;
+    top: 0;
+    margin: 7px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-weight: bold;
+}
+
+#showMsg .exit:hover {
+    color: #e74c3c;
+    transition: 0.3s;
+}
+
+#showMsg .message {
+    padding: 5px;
+    color: #34495e;
+}
+
+#showMsg.display {
+    visibility: visible;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(80px);
+    }
+}
