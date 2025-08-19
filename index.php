@@ -316,14 +316,14 @@ shuffle($places);
                                 <div class="card-content">
                                     <h3><?php echo $place['place_name']; ?></h3>
                                     <p><?php echo $place['description']; ?></p>
-                                    <label for="">Services: </label>
+                                    <!-- <label for="">Services: </label>
                                     <?php foreach ($categories as $category): ?>
                                         <p><?php echo $category['category_name']; ?></p>
                                     <?php endforeach; ?>
                                     <label for="">Activities: </label>
                                     <?php foreach ($activities as $activity): ?>
                                         <p><?php echo $activity['activity_name']; ?></p>
-                                    <?php endforeach; ?>
+                                    <?php endforeach; ?> -->
                                 </div>
                             </a>
                         </div>

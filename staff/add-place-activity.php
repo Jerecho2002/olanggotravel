@@ -440,6 +440,12 @@ $data->session_staff("login.php");
                         <span>Add Place Category</span>
                     </div>
                 </a>
+                <a href="edit-place.php" style="color: inherit; text-decoration: none;">
+                <div class="nav-item">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Edit Place</span>
+                </div>
+                </a>
                 <div class="nav-item">
                     <i class="fas fa-hiking"></i>
                     <span>Activities</span>

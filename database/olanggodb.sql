@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 18, 2025 at 08:52 PM
+-- Generation Time: Aug 19, 2025 at 10:20 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -92,7 +92,9 @@ CREATE TABLE `itineraries` (
 INSERT INTO `itineraries` (`itinerary_id`, `user_id`, `place_id`, `location_id`, `created_at`, `updated_at`) VALUES
 (46, 22, 8, 1, '2025-08-15 08:27:41', '2025-08-15 08:27:41'),
 (47, 22, 9, 1, '2025-08-15 08:27:55', '2025-08-15 08:27:55'),
-(48, 22, 11, 2, '2025-08-17 02:35:19', '2025-08-17 02:35:19');
+(48, 22, 11, 2, '2025-08-17 02:35:19', '2025-08-17 02:35:19'),
+(49, 22, 17, 3, '2025-08-19 07:01:46', '2025-08-19 07:01:46'),
+(50, 22, 12, 3, '2025-08-19 07:01:52', '2025-08-19 07:01:52');
 
 -- --------------------------------------------------------
 
@@ -144,7 +146,7 @@ CREATE TABLE `places` (
 INSERT INTO `places` (`place_id`, `staff_id`, `place_name`, `nearest_index`, `price_label`, `price`, `description`, `duration`, `location_id`, `place_img`, `created_at`, `updated_at`) VALUES
 (8, 1, 'White Sand Beach', 1, '', '', 'Pristine white sand and crystal clear waters perfect for swimming and sunbathing.', '3-6 hours', 1, '1_upscaled.jpg', '2025-08-01 23:57:01', '2025-08-15 07:50:45'),
 (9, 1, 'Coral Reef Adventure', 1, '', '', 'Explore vibrant coral reefs teeming with marine life in our guided snorkeling tours.', '2-4 hours', 1, '2_upscaled.jpg', '2025-08-01 23:57:01', '2025-08-15 07:50:45'),
-(10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 2, '3_upscaled.jpg', '2025-08-02 00:02:49', '2025-08-15 07:50:45'),
+(10, 2, 'Sunset Cruise', 2, '', '', 'Enjoy breathtaking sunsets while cruising around the islands with cocktails.', '3-7 hours', 2, '3_upscaled.jpg', '2025-08-02 00:02:49', '2025-08-19 08:00:41'),
 (11, 2, 'Kayaking Expedition', 2, '', '', 'Paddle through hidden lagoons and discover secret beaches on our kayak tours.', '4-7 hours', 2, '4_upscaled.jpg', '2025-08-02 00:02:49', '2025-08-15 07:50:45'),
 (12, 3, 'Island Hopping', 3, '', '', 'Visit multiple islands in one day and experience their unique beauty and charm.', '1-4 hours', 3, 'upscalemedia-transformed(5).jpeg', '2025-08-02 00:04:42', '2025-08-15 07:50:45'),
 (13, 3, 'Beach Camping', 3, '', '', 'Spend a night under the stars with our fully-equipped beach camping packages.', '4-8 hours', 3, 'upscalemedia-transformed (6).jpeg', '2025-08-02 00:04:42', '2025-08-15 07:50:45'),
@@ -275,7 +277,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `user_img`, `roles`, `created_at`) VALUES
 (22, 'echo', 'echo@gmail.com', '$2y$10$yt8SywGKZf.5PSGESUGQ8u9oK9Pg2l6FftTFRC80wpbR0IQr1JgTe', 'user-default-img.png', 'user', '2025-08-15 07:53:08'),
 (23, 'echo1', 'echo1@gmail.com', '$2y$10$gE577X8zRXJcpzO./5VA3uD2ED/2MPivsmrgU2amkmrFgHfkZUYr2', 'user-default-img.png', 'user', '2025-08-15 07:56:43'),
-(24, 'admin', 'admin@gmail.com', '$2y$10$E6/RjHtAzMrNynhM8qZT.OVbEo7Nm4ZGdW6pzQHywFqCszMYY4xmK', 'user-default-img.png', 'admin', '2025-08-17 04:07:02');
+(24, 'admin', 'admin@gmail.com', '$2y$10$E6/RjHtAzMrNynhM8qZT.OVbEo7Nm4ZGdW6pzQHywFqCszMYY4xmK', 'user-default-img.png', 'admin', '2025-08-17 04:07:02'),
+(25, 'dummy', 'dummy@gmail.com', '$2y$10$EFLMi2o74uN8qg8B6fzmGOHjftyVJM8LvMWhQs3sOQmQzv2e8wGM2', 'user-default-img.png', 'user', '2025-08-19 02:36:03');
 
 --
 -- Indexes for dumped tables
@@ -365,7 +368,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `itineraries`
 --
 ALTER TABLE `itineraries`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `locations`
@@ -401,7 +404,7 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

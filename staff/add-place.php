@@ -1,6 +1,7 @@
 <?php
     include("../database/database.php");
     $data->add_place();
+    $data->session_staff("login.php");
     $places = $data->get_places();
     $staffs = $data->get_staffs();
 ?>
@@ -256,6 +257,12 @@
                     <span>Add Place Category</span>
                 </div>
                 </a>
+                <a href="edit-place.php" style="color: inherit; text-decoration: none;">
+                <div class="nav-item">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Edit Place</span>
+                </div>
+                </a>
                 <div class="nav-item">
                     <i class="fas fa-hiking"></i>
                     <span>Activities</span>
@@ -299,7 +306,7 @@
             ?>
             <!-- Add Place Form -->
             <div class="form-container">
-                <h2>New Place Information</h2>
+                <h2>Place Information</h2>
                 <form action="add-place.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="nearest_index" value="<?php echo $nearest_index; ?>">
                     <input type="hidden" name="location_id" value="<?php echo $location_id; ?>">

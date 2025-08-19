@@ -369,5 +369,32 @@ class Database
         $stmt->execute([$place_id]);
         return $stmt->fetchAll();
     }
+
+    public function update_place(){
+        if(isset($_POST['edit-place'])){
+         $place_id = $_GET['place_id'];
+         $place_name = filter_input(INPUT_POST, 'place_name', FILTER_SANITIZE_STRING);
+         $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_STRING);
+         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+         $current_img_name = $_POST['current_img_name'];
+         $place_img = $_FILES['place_img']['name'];
+         $place_img_tmp_name = $_FILES['place_img']['tmp_name'];
+         $place_img_folder = '../assets/images/' . $place_img;
+
+         if(empty($place_img)){
+            $place_img = $current_img_name;
+         }
+
+         $query = $this->conn()->prepare("UPDATE places SET place_name = ?, duration = ?, description = ?, place_img = ? WHERE place_id = ?");
+         $query->execute([
+            $place_name,
+            $duration,
+            $description,
+            $place_img,
+            $place_id,
+         ]);
+         move_uploaded_file($place_img_tmp_name, $place_img_folder);
+        }
+    }
 }
 $data = new Database();
